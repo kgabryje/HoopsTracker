@@ -1,12 +1,11 @@
 package com.example.kamillog.hoopstracker.models
 
-import java.util.*
-
 data class GameItem(
-    val id: Int,
-    val date: Date,
-    val homeTeam: TeamItem,
-    val awayTeam: TeamItem,
-    val homeTeamScore: Int?,
-    val awayTeamScore: Int?
+    val date: String = "",
+    val homeTeam: String = "",
+    val homeTeamLogo: String? = null,
+    val awayTeam: String = "",
+    val awayTeamLogo: String? = null,
+    val homeTeamScore: Int? = 0,
+    val awayTeamScore: Int? = 0
 )
