@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">HoopsTracker</string>
+
+    <!--Login activity-->
+    <string name="email_verify_prompt">Please verify your email</string>
+    <string name="incorrect_credentials">Incorrect credentials</string>
+    <string name="connection_error">Connection error</string>
 </resources>

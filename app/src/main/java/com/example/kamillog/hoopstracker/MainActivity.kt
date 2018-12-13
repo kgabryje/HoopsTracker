@@ -9,7 +9,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        val mainIntent = Intent(this, HomeActivity::class.java)
+        val mainIntent = Intent(this, FollowTeamsActivity::class.java)
         startActivity(mainIntent)
         finish()
     }

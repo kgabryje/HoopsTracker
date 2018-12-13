@@ -7,40 +7,38 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.kamillog.hoopstracker.models.GameItem
-import com.example.kamillog.hoopstracker.viewholders.GameViewHolder
+import com.example.kamillog.hoopstracker.models.TeamItem
+import com.example.kamillog.hoopstracker.viewholders.TeamsViewHolder
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_follow_teams.*
 
-class HomeActivity : AppCompatActivity() {
+class FollowTeamsActivity : AppCompatActivity() {
 
     private val mDatabaseReference: DatabaseReference =
-        FirebaseDatabase.getInstance().reference.child("games")
-    private val options: FirebaseRecyclerOptions<GameItem> =
-        FirebaseRecyclerOptions.Builder<GameItem>()
-            .setQuery(mDatabaseReference, GameItem::class.java)
+        FirebaseDatabase.getInstance().reference.child("teams")
+    private val options: FirebaseRecyclerOptions<TeamItem> =
+        FirebaseRecyclerOptions.Builder<TeamItem>()
+            .setQuery(mDatabaseReference, TeamItem::class.java)
             .build()
 
-    private val mAdapter: FirebaseRecyclerAdapter<GameItem, GameViewHolder> =
-        object: FirebaseRecyclerAdapter<GameItem, GameViewHolder>(options) {
+    private val mAdapter: FirebaseRecyclerAdapter<TeamItem, TeamsViewHolder> =
+        object: FirebaseRecyclerAdapter<TeamItem, TeamsViewHolder>(options) {
 
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamsViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.game_item,parent,false)
-                return GameViewHolder(view)
+                    .inflate(R.layout.team_item,parent,false)
+                return TeamsViewHolder(view)
             }
 
 
-            override fun onBindViewHolder(holder: GameViewHolder?, position: Int,
-                                          game: GameItem) {
+            override fun onBindViewHolder(holder: TeamsViewHolder?, position: Int,
+                                          team: TeamItem
+            ) {
                 holder?.run {
-                    setHomeTeam(this@HomeActivity, game.homeTeamLogo)
-//                    setAwayTeam(this@HomeActivity, game.awayTeamLogo)
-//                    setScore(game.homeTeamScore, game.awayTeamScore)
-                    setGameDate(game.date)
+                    team.backgroundLogo?.let { setTeamLogo(this@FollowTeamsActivity, it) }
 //                    itemView.setOnClickListener {
 //                        startActivity(
 //                            Intent(activity, ExerciseDetailsActivity::class.java)
@@ -53,13 +51,13 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_follow_teams)
 
-        homeRecyclerView.apply {
+        followTeamsRecyclerView.apply {
             adapter = mAdapter
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(applicationContext)
-            addItemDecoration(DividerItemDecoration(applicationContext,DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL))
         }
     }
 
