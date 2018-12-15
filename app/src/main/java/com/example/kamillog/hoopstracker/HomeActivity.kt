@@ -37,9 +37,9 @@ class HomeActivity : AppCompatActivity() {
             override fun onBindViewHolder(holder: GameViewHolder?, position: Int,
                                           game: GameItem) {
                 holder?.run {
-                    setHomeTeam(this@HomeActivity, game.homeTeamLogo)
-//                    setAwayTeam(this@HomeActivity, game.awayTeamLogo)
-//                    setScore(game.homeTeamScore, game.awayTeamScore)
+                    game.homeTeam.logo?.let { setHomeTeam(this@HomeActivity, it) }
+                    game.awayTeam.logo?.let { setAwayTeam(this@HomeActivity, it) }
+                    setScore(game.homeTeamScore, game.awayTeamScore)
                     setGameDate(game.date)
 //                    itemView.setOnClickListener {
 //                        startActivity(
