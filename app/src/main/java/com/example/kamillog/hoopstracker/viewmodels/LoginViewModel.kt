@@ -15,12 +15,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.*
 
 class LoginViewModel(private val ctx: Context) : ViewModel() {
-    private val loginService = LoginService()
-
     private val errorLiveData = MutableLiveData<String>()
     private val newActivity = MutableLiveData<Boolean>()
     private val spotsLiveData = MutableLiveData<Boolean>()
@@ -30,11 +29,13 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
     fun spotsGetter(): LiveData<Boolean> = spotsLiveData
 
     private val dbRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val loginService = LoginService()
+
 
     private val mListener: FirebaseAuth.AuthStateListener by lazy {
         loginService.initFirebaseAuthListener {
             newActivity.value = true
+            print(LoginService.mAuth.currentUser!!.displayName)
         }
     }
 
@@ -50,7 +51,7 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
     }
 
     fun startListening(){
-        mAuth.addAuthStateListener(mListener)
+        LoginService.mAuth.addAuthStateListener(mListener)
     }
 
     fun signInWithEmailAndPassword(email: String, pass: String, context: Context) {
@@ -58,23 +59,24 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
             errorLiveData.value = context.getString(R.string.incorrect_credentials)
             return
         } else {
-            loginService.login(context, mAuth, email, pass, {
+            loginService.login(context, email, pass, {
                 spotsLiveData.value = it
             }, {
                 errorLiveData.value = it
             }, {
                 newActivity.value = true
+                print(LoginService.mAuth.currentUser!!.displayName)
             })
         }
     }
 
     fun firebaseAuthWithGoogle(account: GoogleSignInAccount, ctx: Context) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        mAuth.signInWithCredential(credential)
+        LoginService.mAuth.signInWithCredential(credential)
             .addOnCompleteListener(ctx as Activity) { task->
 
                 if(task.isSuccessful) {
-                    val userId: String = mAuth.currentUser?.uid ?: ""
+                    val userId: String = LoginService.mAuth.currentUser?.uid ?: ""
                     val acct = GoogleSignIn.getLastSignedInAccount(ctx)
                     dbRef.addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(p0: DataSnapshot) {
@@ -96,6 +98,7 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
                     })
                     spotsLiveData.value = false
                     newActivity.value = true
+                    print(LoginService.mAuth.currentUser!!.displayName)
                 } else {
                     spotsLiveData.value = false
                     errorLiveData.value = ctx.getString(R.string.connection_error)

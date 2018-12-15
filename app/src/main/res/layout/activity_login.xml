@@ -5,18 +5,17 @@
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_animation"
-                tools:context="com.example.kamillog.hoopstracker.LoginActivity">
-
+                tools:context=".LoginActivity">
 
     <EditText
             android:id="@+id/emailText"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/passwordText"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="70dp"
             android:drawableStart="@drawable/ic_login_user"
+            android:layout_marginTop="100dp"
+            android:padding="10dp"
             android:ems="10"
             android:hint="@string/emailTxt"
             android:inputType="textEmailAddress" />
@@ -25,10 +24,11 @@
             android:id="@+id/passwordText"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/loginBtn"
-            android:layout_alignStart="@+id/emailText"
-            android:layout_marginBottom="80dp"
+            android:layout_below="@id/emailText"
+            android:layout_centerHorizontal="true"
             android:drawableStart="@drawable/ic_password"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="@string/passwordTxt"
             android:inputType="textPassword" />
@@ -37,9 +37,9 @@
             android:id="@+id/loginBtn"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_above="@+id/googleBtn"
+            android:layout_below="@+id/passwordText"
             android:layout_alignStart="@+id/googleBtn"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/btn_login"
             android:letterSpacing="0.3"
             android:text="@string/login" />

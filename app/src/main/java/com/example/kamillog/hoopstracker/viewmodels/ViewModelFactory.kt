@@ -8,6 +8,7 @@ class ViewModelFactory(val context: Context, val type: String) : ViewModelProvid
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (type) {
             "Login" -> LoginViewModel(context) as T
+            "Register" -> RegisterViewModel(context) as T
             else -> throw IllegalArgumentException("Pass correct factory type")
         }
     }

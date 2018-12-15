@@ -10,6 +10,10 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginService {
+    companion object {
+        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    }
+
     fun initGoogleApiClient(ctx: Context, onError: (String) -> Unit): GoogleApiClient {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(ctx.getString(R.string.default_web_client_id))
@@ -30,7 +34,7 @@ class LoginService {
             }
         }
 
-    fun login(ctx: Context, mAuth: FirebaseAuth,email: String, pass: String,
+    fun login(ctx: Context,email: String, pass: String,
               onSpotsShow: (Boolean) -> Unit,
               onError: (String) -> Unit,
               onSuccess:() -> Unit){
@@ -48,5 +52,10 @@ class LoginService {
                     onError(ctx.getString(R.string.incorrect_credentials))
                 }
             }
+    }
+
+    fun logout(mAuth: FirebaseAuth, onSuccess: () -> Unit) {
+        mAuth.signOut()
+        onSuccess()
     }
 }

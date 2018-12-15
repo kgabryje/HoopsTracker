@@ -1,10 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".RegisterActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/registerLayout"
+                tools:context=".RegisterActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <EditText
+            android:id="@+id/registerEmailTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_margin="15dp"
+            android:ems="10"
+            android:hint="@string/emailTxt"
+            android:inputType="textEmailAddress"
+            android:drawableStart="@drawable/ic_email_register"
+            android:padding="10dp" />
+
+
+    <EditText
+            android:id="@+id/registerPasswordTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/registerEmailTxt"
+            android:ems="10"
+            android:drawableStart="@drawable/ic_password"
+            android:hint="@string/passwordTxt"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:layout_margin="15dp"/>
+
+    <EditText
+            android:id="@+id/registerConfirmPasswordTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/registerPasswordTxt"
+            android:layout_margin="15dp"
+            android:ems="10"
+            android:drawableStart="@drawable/ic_password"
+            android:hint="@string/confirmPasswordTxt"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+    <Button
+            android:id="@+id/registerBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/btn_login"
+            android:text="@string/register_btn" />
+
+
+</RelativeLayout>

@@ -6,7 +6,14 @@
     <string name="incorrect_credentials">Incorrect credentials</string>
     <string name="connection_error">Connection error</string>
     <string name="passwordTxt">Password</string>
+    <string name="confirmPasswordTxt">Confirm password</string>
     <string name="register">Register here</string>
+    <string name="register_btn">Register</string>
     <string name="emailTxt">E-mail</string>
     <string name="login">Sign in</string>
+    <string name="acc_creation_failed">User registration failed</string>
+    <string name="complete_fields">Complete all fields</string>
+    <string name="password_mismatch">Passwords don\'t match</string>
+    <string name="verification_email">Verification email sent</string>
+    <string name="register_succeeded">Register succeeded</string>
 </resources>

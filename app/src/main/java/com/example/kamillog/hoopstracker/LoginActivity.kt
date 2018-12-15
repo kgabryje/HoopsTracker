@@ -12,6 +12,7 @@ import com.example.kamillog.hoopstracker.viewmodels.LoginViewModel
 import com.example.kamillog.hoopstracker.viewmodels.ViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel : LoginViewModel
@@ -33,6 +34,18 @@ class LoginActivity : AppCompatActivity() {
         viewModel.startNewActivity().observe(this, Observer(this::startHomeActivity))
         viewModel.spotsGetter().observe(this, Observer(spotsDialogHandler::toggleSpots))
         viewModel.error().observe(this, Observer(toastMessageHandler::showToastMessage))
+
+        registerText.setOnClickListener {
+            startActivityForResult(Intent(this, RegisterActivity::class.java),REGISTER_KEY)
+        }
+
+        loginBtn.setOnClickListener {
+            signInWithEmailAndPassword(emailText?.text.toString().trim(), passwordText?.text.toString().trim())
+        }
+
+        googleBtn.setOnClickListener {
+            signInWithGoogle()
+        }
     }
 
     override fun onStart() {
@@ -54,15 +67,15 @@ class LoginActivity : AppCompatActivity() {
         }
         else if(requestCode == REGISTER_KEY && resultCode == Activity.RESULT_OK)
         {
-//            toastMessageHandler.showToastMessage(getString(R.string.register_succeeded))
+            toastMessageHandler.showToastMessage(getString(R.string.register_succeeded))
         }
     }
 
     private fun startHomeActivity(state: Boolean?){
-        if(state == true) {
+        if (state == true) {
             startActivity(
                 Intent(
-                    this, HomeActivity::class.java
+                    this, FollowTeamsActivity::class.java // todo: change to HomeActivity
                 ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             )
             finish()
