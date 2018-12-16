@@ -62,7 +62,6 @@ class FollowTeamsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_follow_teams)
-        RestApiConnector().getTeamLogs()
 
         followTeamsRecyclerView.apply {
             adapter = mAdapter

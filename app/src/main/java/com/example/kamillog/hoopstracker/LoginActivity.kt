@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
         if (state == true) {
             startActivity(
                 Intent(
-                    this, FollowTeamsActivity::class.java // todo: change to HomeActivity
+                    this, HomeActivity::class.java // todo: change to HomeActivity
                 ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             )
             finish()
