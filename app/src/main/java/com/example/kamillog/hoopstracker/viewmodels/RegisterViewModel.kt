@@ -9,6 +9,7 @@ import android.content.Intent
 import android.text.TextUtils
 import com.example.kamillog.hoopstracker.R
 import com.example.kamillog.hoopstracker.models.RegisterModel
+import com.example.kamillog.hoopstracker.services.LoginService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -24,7 +25,7 @@ class RegisterViewModel(private val context: Context) : ViewModel() {
 
     private val registerModel: RegisterModel = RegisterModel()
     private val dbRef: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val mAuth: FirebaseAuth = LoginService.mAuth
 
     fun register(email: String, pass: String, passConfirm: String) {
         if (

@@ -39,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
                 holder?.run {
                     game.homeTeam.logo?.let { setHomeTeam(this@HomeActivity, it) }
                     game.awayTeam.logo?.let { setAwayTeam(this@HomeActivity, it) }
-                    setScore(game.homeTeamScore, game.awayTeamScore)
+//                    setScore(game.homeTeamScore, game.awayTeamScore)
                     setGameDate(game.date)
 //                    itemView.setOnClickListener {
 //                        startActivity(

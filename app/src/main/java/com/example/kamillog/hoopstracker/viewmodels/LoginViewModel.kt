@@ -31,11 +31,12 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
     private val dbRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
     private val loginService = LoginService()
 
+    private val mAuth = LoginService.mAuth
 
     private val mListener: FirebaseAuth.AuthStateListener by lazy {
         loginService.initFirebaseAuthListener {
             newActivity.value = true
-            print(LoginService.mAuth.currentUser!!.displayName)
+            print(mAuth.currentUser!!.displayName)
         }
     }
 
@@ -51,7 +52,7 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
     }
 
     fun startListening(){
-        LoginService.mAuth.addAuthStateListener(mListener)
+        mAuth.addAuthStateListener(mListener)
     }
 
     fun signInWithEmailAndPassword(email: String, pass: String, context: Context) {
@@ -65,18 +66,18 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
                 errorLiveData.value = it
             }, {
                 newActivity.value = true
-                print(LoginService.mAuth.currentUser!!.displayName)
+                print(mAuth.currentUser!!.displayName)
             })
         }
     }
 
     fun firebaseAuthWithGoogle(account: GoogleSignInAccount, ctx: Context) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        LoginService.mAuth.signInWithCredential(credential)
+        mAuth.signInWithCredential(credential)
             .addOnCompleteListener(ctx as Activity) { task->
 
                 if(task.isSuccessful) {
-                    val userId: String = LoginService.mAuth.currentUser?.uid ?: ""
+                    val userId: String = mAuth.currentUser?.uid ?: ""
                     val acct = GoogleSignIn.getLastSignedInAccount(ctx)
                     dbRef.addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(p0: DataSnapshot) {
@@ -98,7 +99,7 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
                     })
                     spotsLiveData.value = false
                     newActivity.value = true
-                    print(LoginService.mAuth.currentUser!!.displayName)
+                    print(mAuth.currentUser!!.displayName)
                 } else {
                     spotsLiveData.value = false
                     errorLiveData.value = ctx.getString(R.string.connection_error)
