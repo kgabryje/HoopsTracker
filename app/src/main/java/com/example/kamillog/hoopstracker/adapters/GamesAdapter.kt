@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.example.kamillog.hoopstracker.R
 import com.example.kamillog.hoopstracker.models.GameItem
 import com.example.kamillog.hoopstracker.viewholders.GameViewHolder
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class GamesAdapter(
@@ -23,14 +24,17 @@ class GamesAdapter(
         val viewHolder = holder as GameViewHolder
         val model: GameItem = gameList[position]
         viewHolder.run {
-            setHomeTeamLogo(context, model.homeTeam.logo!!)
+            setHomeTeamLogo(context, model.homeTeam.logo)
             setHomeTeamCity(model.homeTeam.city)
             setHomeTeamName(model.homeTeam.name)
-            setAwayTeamLogo(context, model.awayTeam.logo!!)
+            setAwayTeamLogo(context, model.awayTeam.logo)
             setAwayTeamCity(model.awayTeam.city)
             setAwayTeamName(model.awayTeam.name)
             setScore(model.homeTeamScore, model.awayTeamScore)
-            setGameDate(model.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm")))
+            setGameDate(model.date.format(
+                DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm")
+                    .withZone(ZoneId.systemDefault())
+            ))
         }
     }
 

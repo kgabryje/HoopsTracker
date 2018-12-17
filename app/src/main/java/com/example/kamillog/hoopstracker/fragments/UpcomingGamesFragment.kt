@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import com.example.kamillog.hoopstracker.R
 import com.example.kamillog.hoopstracker.adapters.GamesAdapter
 import com.example.kamillog.hoopstracker.services.GamesService
+import com.example.kamillog.hoopstracker.services.TeamsService
 
 class UpcomingGamesFragment : Fragment() {
 
@@ -54,6 +55,14 @@ class UpcomingGamesFragment : Fragment() {
         viewModel.followedTeams().observe(this, Observer {
             viewModel.getUpcomingGames(it!!)
         })
-        viewModel.loadFollowedTeams(true)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (TeamsService.followedTeams.size == 0) {
+            viewModel.loadFollowedTeams()
+        } else {
+            viewModel.getUpcomingGames(TeamsService.followedTeams, true)
+        }
     }
 }

@@ -3,6 +3,9 @@ package com.example.kamillog.hoopstracker.utils
 import com.example.kamillog.hoopstracker.models.*
 import com.example.kamillog.hoopstracker.services.TeamsService
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -23,7 +26,7 @@ class Converter {
         val date = LocalDateTime.parse(
             "${gameLog.game.date} ${gameLog.game.time}",
             DateTimeFormatter.ofPattern("yyyy-MM-dd h:mma", Locale.ENGLISH)
-        )
+        ).atZone(ZoneId.of("EST"))
         return GameItem(gameLog.game.id, date, homeTeam, awayTeam, homeTeamScore, awayTeamScore)
     }
 
@@ -33,7 +36,7 @@ class Converter {
         val date = LocalDateTime.parse(
             "${gameApi.date} ${gameApi.time}",
             DateTimeFormatter.ofPattern("yyyy-MM-dd h:mma", Locale.ENGLISH)
-        )
+        ).atZone(ZoneId.of("EST"))
         return GameItem(gameApi.id, date, homeTeam, awayTeam)
     }
 

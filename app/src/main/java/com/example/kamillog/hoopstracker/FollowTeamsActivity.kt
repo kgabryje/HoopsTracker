@@ -21,6 +21,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_follow_teams.*
+import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.team_item.view.*
 
 class FollowTeamsActivity : AppCompatActivity() {
@@ -31,6 +32,7 @@ class FollowTeamsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_follow_teams)
+        setSupportActionBar(toolbar)
 
         followTeamsRecyclerView.apply {
             adapter = teamsAdapter
@@ -42,7 +44,7 @@ class FollowTeamsActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, ViewModelFactory(this, "FollowTeams"))
             .get(FollowTeamsViewModel::class.java)
 
-        viewModel.followedTeams().observe(this, Observer { teams ->
+        viewModel.followedTeams().observe(this, Observer {
             teamsAdapter.notifyDataSetChanged()
         })
 

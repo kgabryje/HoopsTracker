@@ -28,7 +28,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-//        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar)
         Log.d("home", "oncreate")
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         viewModel.userModel().value = UserModel()
