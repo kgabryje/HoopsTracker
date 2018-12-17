@@ -28,7 +28,7 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
     fun startNewActivity(): LiveData<Boolean> = newActivity
     fun spotsGetter(): LiveData<Boolean> = spotsLiveData
 
-    private val dbRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
+    private val dbRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("users")
     private val loginService = LoginService()
 
     private val mAuth = LoginService.mAuth
@@ -85,7 +85,7 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
                                 if (acct != null ) {
                                     val personEmail = acct.email
                                     dbRef.child(userId).run {
-                                        child("Email").setValue(personEmail)
+                                        child("email").setValue(personEmail)
                                         push()
                                     }
                                 }
@@ -93,7 +93,7 @@ class LoginViewModel(private val ctx: Context) : ViewModel() {
                         }
 
                         override fun onCancelled(p0: DatabaseError) {
-                            Log.e("Logout", "error!")
+                            Log.e("Sign out", "error!")
                             spotsLiveData.value = false
                         }
                     })

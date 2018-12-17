@@ -15,7 +15,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:padding="10dp"
                 android:text="Game date"
                 android:textSize="14sp"/>
 
@@ -36,21 +35,25 @@
                     android:layout_centerHorizontal="true"
                     android:maxHeight="250dp"/>
 
-            <TextView
-                    android:id="@+id/home_team_city"
+            <LinearLayout
+                    android:id="@+id/home_team_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="City"
                     android:layout_toEndOf="@id/home_team_logo"
-                    android:padding="5dp"/>
-            <TextView
-                    android:id="@+id/home_team_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:layout_toEndOf="@id/home_team_logo"
-                    android:layout_below="@id/home_team_city"
-                    android:padding="5dp"/>
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+                <TextView
+                        android:id="@+id/home_team_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="City"/>
+                <TextView
+                        android:id="@+id/home_team_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name"/>
+            </LinearLayout>
+
             <TextView
                     android:id="@+id/score"
                     android:layout_width="wrap_content"
@@ -62,21 +65,27 @@
                     android:textSize="14sp"
                     android:textStyle="bold"/>
 
-            <TextView
-                    android:id="@+id/away_team_city"
+            <LinearLayout
+                    android:id="@+id/away_team_linear_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="City"
                     android:layout_toStartOf="@id/away_team_logo"
-                    android:padding="5dp"/>
-            <TextView
-                    android:id="@+id/away_team_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:layout_toStartOf="@id/away_team_logo"
-                    android:layout_below="@id/away_team_city"
-                    android:padding="5dp"/>
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true">
+                <TextView
+                        android:id="@+id/away_team_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="City"/>
+                <TextView
+                        android:id="@+id/away_team_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="Name"/>
+            </LinearLayout>
+
             <ImageView
                     android:id="@+id/away_team_logo"
                     android:layout_width="50dp"

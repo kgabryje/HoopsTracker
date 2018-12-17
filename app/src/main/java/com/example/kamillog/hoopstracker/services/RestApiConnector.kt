@@ -1,18 +1,13 @@
 package com.example.kamillog.hoopstracker.services
 
-import com.example.kamillog.hoopstracker.models.TeamGameLogsEndpoint
-import retrofit2.Callback
 import retrofit2.Retrofit
 import java.util.*
 import okhttp3.OkHttpClient
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.Call
-import retrofit2.Response
-
 
 class RestApiConnector {
-    private val API_KEY = "" // provide valid api key from mysportsfeeds.com for app to work
-    private val password = "" // provide valid password to mysportsfeeds.com for app to work
+    private val API_KEY = "0c9e9ab5-0827-4ae3-95f2-6bb541"
+    private val password = "mikaella123"
     private val encoding = Base64.getEncoder().encodeToString("$API_KEY:$password".toByteArray())
     private val baseUrl = "https://api.mysportsfeeds.com/v1.2/pull/nba/"
 
@@ -30,16 +25,5 @@ class RestApiConnector {
         .build()
     private val apiConnector: MySportsFeedsApi = retrofit.create(MySportsFeedsApi::class.java)
 
-    fun getTeamLogs() {
-        val call = apiConnector.getTeamGameLogs("latest", "boston-celtics,gsw", "from-3-days-ago-to-today")
-        call.enqueue(object : Callback<TeamGameLogsEndpoint> {
-            override fun onResponse(call: Call<TeamGameLogsEndpoint>, response: Response<TeamGameLogsEndpoint>) {
-                val res = response.body().toString()
-            }
-
-            override fun onFailure(call: Call<TeamGameLogsEndpoint>, t: Throwable) {
-
-            }
-        })
-    }
+    fun apiConnector(): MySportsFeedsApi = apiConnector
 }

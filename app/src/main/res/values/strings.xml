@@ -16,4 +16,7 @@
     <string name="password_mismatch">Passwords don\'t match</string>
     <string name="verification_email">Verification email sent</string>
     <string name="register_succeeded">Register succeeded</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

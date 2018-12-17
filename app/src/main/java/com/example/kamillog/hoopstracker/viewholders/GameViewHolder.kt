@@ -5,32 +5,50 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.kamillog.hoopstracker.models.TeamItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.game_item.view.*
-import java.util.*
 
 class GameViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-    fun setHomeTeam(context: Context, homeTeam: String) {
-        val homeTeamLogo: ImageView = view.home_team_logo
-        homeTeam.let {
-            Picasso.with(context).load(it).into(homeTeamLogo)
+    fun setHomeTeamLogo(context: Context, homeTeamLogo: String) {
+        val homeTeamLogoView: ImageView = view.home_team_logo
+        homeTeamLogo.let {
+            Picasso.with(context).load(it).into(homeTeamLogoView)
         }
     }
 
-    fun setAwayTeam(context: Context, awayTeam: String) {
-        val awayTeamLogo: ImageView = view.away_team_logo
-        awayTeam.let {
-            Picasso.with(context).load(it).into(awayTeamLogo)
+    fun setHomeTeamCity(city: String) {
+        val cityTextView: TextView = view.home_team_city
+        cityTextView.text = city
+    }
+
+    fun setHomeTeamName(city: String) {
+        val nameTextView: TextView = view.home_team_name
+        nameTextView.text = city
+    }
+
+    fun setAwayTeamLogo(context: Context, awayTeamLogo: String) {
+        val awayTeamLogoView: ImageView = view.away_team_logo
+        awayTeamLogo.let {
+            Picasso.with(context).load(it).into(awayTeamLogoView)
         }
     }
 
-    fun setScore(homeTeamScore: Int?, awayTeamScore: Int?) {
+    fun setAwayTeamCity(city: String) {
+        val cityTextView: TextView = view.away_team_city
+        cityTextView.text = city
+    }
+
+    fun setAwayTeamName(city: String) {
+        val nameTextView: TextView = view.away_team_name
+        nameTextView.text = city
+    }
+
+    fun setScore(homeTeamScore: String, awayTeamScore: String) {
         val scoreView: TextView = view.score
-        if(homeTeamScore != null && awayTeamScore != null) {
+        if(homeTeamScore != "" && awayTeamScore != "") {
             scoreView.text = "$homeTeamScore - $awayTeamScore"
         } else {
-            scoreView.text = "Upcoming"
+            scoreView.text = ""
         }
     }
 

@@ -55,11 +55,11 @@ class RegisterViewModel(private val context: Context) : ViewModel() {
             mAuth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(context as Activity) { task ->
                     if (task.isSuccessful) {
-                        val usersReference: DatabaseReference = dbRef.child("Users")
+                        val usersReference: DatabaseReference = dbRef.child("users")
                         val userId: String = mAuth.currentUser?.uid ?: ""
                         val userIdRef: DatabaseReference = usersReference.child(userId)
                         userIdRef.run{
-                            child("Email").setValue(email)
+                            child("email").setValue(email)
                             push()
                         }
 
