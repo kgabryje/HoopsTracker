@@ -48,7 +48,7 @@ class MyTeamsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         userViewModel.setUserData()
 
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayoutMyTeams, toolbarFollowTeams, R.string.navigation_drawer_open,
+            this, drawerLayoutMyTeams, toolbarMyTeams, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
         drawerLayoutMyTeams.addDrawerListener(toggle)

@@ -38,7 +38,7 @@
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_below="@+id/passwordText"
-            android:layout_alignStart="@+id/googleBtn"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:background="@drawable/btn_login"
             android:letterSpacing="0.3"

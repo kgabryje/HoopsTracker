@@ -16,6 +16,7 @@ import com.example.kamillog.hoopstracker.R
 import com.example.kamillog.hoopstracker.adapters.GamesAdapter
 import com.example.kamillog.hoopstracker.services.GamesService
 import com.example.kamillog.hoopstracker.services.TeamsService
+import com.example.kamillog.hoopstracker.viewmodels.GamesViewModel
 
 class FinishedGamesFragment : Fragment() {
 
@@ -24,7 +25,7 @@ class FinishedGamesFragment : Fragment() {
     }
 
     private lateinit var gamesAdapter: GamesAdapter
-    lateinit var viewModel: FinishedGamesViewModel
+    lateinit var viewModel: GamesViewModel
 
     private lateinit var recyclerView: RecyclerView
 
@@ -46,7 +47,7 @@ class FinishedGamesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(FinishedGamesViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
         viewModel.finishedGames().observe(this, Observer {
             gamesAdapter.gameList = it!!
             gamesAdapter.notifyDataSetChanged()

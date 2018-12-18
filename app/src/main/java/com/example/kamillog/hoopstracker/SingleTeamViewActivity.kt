@@ -17,7 +17,6 @@ import com.example.kamillog.hoopstracker.adapters.SingleTeamFragmentAdapter
 import com.example.kamillog.hoopstracker.models.TeamItem
 import com.example.kamillog.hoopstracker.models.UserModel
 import com.example.kamillog.hoopstracker.services.LoginService
-import com.example.kamillog.hoopstracker.services.TeamsService
 import com.example.kamillog.hoopstracker.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.activity_single_team_view.*
 import kotlinx.android.synthetic.main.app_bar_single_team.*

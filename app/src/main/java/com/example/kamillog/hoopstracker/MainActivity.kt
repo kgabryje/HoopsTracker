@@ -3,9 +3,7 @@ package com.example.kamillog.hoopstracker
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.example.kamillog.hoopstracker.models.TeamItem
 import com.example.kamillog.hoopstracker.services.TeamsService
-import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

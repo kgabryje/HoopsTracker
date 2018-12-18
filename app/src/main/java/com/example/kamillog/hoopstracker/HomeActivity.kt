@@ -11,22 +11,25 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import com.example.kamillog.hoopstracker.adapters.HomeFragmentAdapter
 import com.example.kamillog.hoopstracker.models.UserModel
-import com.example.kamillog.hoopstracker.services.GamesService
 import com.example.kamillog.hoopstracker.services.LoginService
-import com.example.kamillog.hoopstracker.services.TeamsService
 import com.example.kamillog.hoopstracker.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.content_home.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
+import com.example.kamillog.hoopstracker.R.id.refresh_btn
+import com.example.kamillog.hoopstracker.viewmodels.GamesViewModel
+import com.example.kamillog.hoopstracker.services.TeamsService
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var viewModel: UserViewModel
+    private lateinit var gamesViewModel: GamesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
         viewModel.setUserData()
 
+        gamesViewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
         //Add adapter to pageView
         homeViewPager.adapter = HomeFragmentAdapter(supportFragmentManager)
         homeTab.setupWithViewPager(homeViewPager)
@@ -75,14 +79,25 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        menuInflater.inflate(R.menu.home, menu)
-//        return true
-//    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.refresh_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        refresh_btn -> {
+            gamesViewModel.getUpcomingGames(TeamsService.followedTeams, true)
+            gamesViewModel.getTeamLogs(TeamsService.followedTeams, true)
+            true
+        }
+        else -> false
+    }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_home -> {}
+            R.id.nav_home -> {
+            }
             R.id.nav_follow_teams -> {
                 startActivity(Intent(this, FollowTeamsActivity::class.java))
             }
@@ -90,7 +105,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, MyTeamsActivity::class.java))
             }
 
-            R.id.nav_logout-> {
+            R.id.nav_logout -> {
                 LoginService().signOut()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
