@@ -91,6 +91,8 @@ class GamesViewModel : ViewModel() {
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.value == null) {
+                    TeamsService.followedTeams = mutableListOf()
+                    followedTeamsLiveData.value = TeamsService.followedTeams
                     return
                 }
                 val teams = mutableListOf<TeamItem>()

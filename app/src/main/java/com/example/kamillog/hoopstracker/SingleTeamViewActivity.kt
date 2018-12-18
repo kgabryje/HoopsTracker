@@ -10,6 +10,7 @@ import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
@@ -17,6 +18,8 @@ import com.example.kamillog.hoopstracker.adapters.SingleTeamFragmentAdapter
 import com.example.kamillog.hoopstracker.models.TeamItem
 import com.example.kamillog.hoopstracker.models.UserModel
 import com.example.kamillog.hoopstracker.services.LoginService
+import com.example.kamillog.hoopstracker.utils.ToastMessageHandler
+import com.example.kamillog.hoopstracker.viewmodels.GamesViewModel
 import com.example.kamillog.hoopstracker.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.activity_single_team_view.*
 import kotlinx.android.synthetic.main.app_bar_single_team.*
@@ -27,6 +30,7 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
     lateinit var team: TeamItem
     private lateinit var viewModel: UserViewModel
+    private lateinit var gamesViewModel: GamesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,8 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
             navViewSingleTeam.getHeaderView(0).navbarEmailID.text = it?.email
         })
         viewModel.setUserData()
+
+        gamesViewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
 
         singleTeamViewPager.adapter = SingleTeamFragmentAdapter(supportFragmentManager)
         singleTeamTab.setupWithViewPager(singleTeamViewPager)
@@ -96,5 +102,20 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
         }
         drawerLayoutSingleTeam.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.refresh_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.refresh_btn -> {
+            gamesViewModel.getUpcomingGames(listOf(team), true)
+            gamesViewModel.getTeamLogs(listOf(team), true)
+            ToastMessageHandler(this).showToastMessage("Games refreshed")
+            true
+        }
+        else -> false
     }
 }

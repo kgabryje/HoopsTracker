@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.nav_header_home.view.*
 import com.example.kamillog.hoopstracker.R.id.refresh_btn
 import com.example.kamillog.hoopstracker.viewmodels.GamesViewModel
 import com.example.kamillog.hoopstracker.services.TeamsService
+import com.example.kamillog.hoopstracker.utils.ToastMessageHandler
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var viewModel: UserViewModel
@@ -70,6 +71,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -88,6 +90,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         refresh_btn -> {
             gamesViewModel.getUpcomingGames(TeamsService.followedTeams, true)
             gamesViewModel.getTeamLogs(TeamsService.followedTeams, true)
+            ToastMessageHandler(this).showToastMessage("Games refreshed")
             true
         }
         else -> false
@@ -113,5 +116,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun textViewOnClick(v: View) {
+        startActivity(Intent(this, FollowTeamsActivity::class.java))
     }
 }

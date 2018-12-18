@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import com.example.kamillog.hoopstracker.adapters.TeamsAdapter
 import com.example.kamillog.hoopstracker.models.TeamItem
 import com.example.kamillog.hoopstracker.models.UserModel
@@ -57,12 +59,24 @@ class MyTeamsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
     override fun onStart() {
         super.onStart()
-        mAdapter.notifyDataSetChanged()
+        if (TeamsService.followedTeams.isEmpty()) {
+            myTeamsRecyclerView.visibility = View.GONE
+            my_teams_no_teams_followed.visibility = View.VISIBLE
+        } else {
+            my_teams_no_teams_followed.visibility = View.GONE
+            myTeamsRecyclerView.visibility = View.VISIBLE
+            mAdapter.notifyDataSetChanged()
+        }
     }
 
     fun onClick(team: TeamItem) {
         val intent = Intent(this, SingleTeamViewActivity::class.java).putExtra("team", team)
         startActivity(intent)
+    }
+
+    fun textViewOnClick(v: View) {
+        startActivity(Intent(this, FollowTeamsActivity::class.java))
+        finish()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

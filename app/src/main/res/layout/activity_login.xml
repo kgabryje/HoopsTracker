@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:drawableStart="@drawable/ic_login_user"
+            android:drawableStart="@drawable/ic_email_register"
             android:layout_marginTop="100dp"
             android:padding="10dp"
             android:ems="10"
