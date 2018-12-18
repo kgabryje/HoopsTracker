@@ -4,8 +4,6 @@ import com.example.kamillog.hoopstracker.models.*
 import com.example.kamillog.hoopstracker.services.TeamsService
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -17,11 +15,11 @@ class Converter {
         val homeTeamScore: String
         val awayTeamScore: String
         if (observedTeam == homeTeam) {
-            homeTeamScore = gameLog.stats.Pts.points
-            awayTeamScore = gameLog.stats.PtsAgainst.points
+            homeTeamScore = gameLog.points.Pts.points
+            awayTeamScore = gameLog.points.PtsAgainst.points
         } else {
-            homeTeamScore = gameLog.stats.PtsAgainst.points
-            awayTeamScore = gameLog.stats.Pts.points
+            homeTeamScore = gameLog.points.PtsAgainst.points
+            awayTeamScore = gameLog.points.Pts.points
         }
         val date = LocalDateTime.parse(
             "${gameLog.game.date} ${gameLog.game.time}",

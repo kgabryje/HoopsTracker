@@ -1,6 +1,6 @@
 package com.example.kamillog.hoopstracker.models
 
-data class StatsItem(
+data class PointsItem(
     val Pts: PointsApi = PointsApi(),
     val PtsAgainst: PointsApi = PointsApi()
 )

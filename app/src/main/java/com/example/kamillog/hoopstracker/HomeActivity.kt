@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.content_home.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
 import com.example.kamillog.hoopstracker.R.id.refresh_btn
+import com.example.kamillog.hoopstracker.services.GamesService
 import com.example.kamillog.hoopstracker.viewmodels.GamesViewModel
 import com.example.kamillog.hoopstracker.services.TeamsService
 import com.example.kamillog.hoopstracker.utils.ToastMessageHandler
@@ -69,6 +70,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+    }
+
+    override fun onDestroy() {
+        Log.d("home", "ondestroy")
+        TeamsService.followedTeams.clear()
+        GamesService.finishedGames = listOf()
+        GamesService.upcomingGames = listOf()
+        super.onDestroy()
     }
 
 

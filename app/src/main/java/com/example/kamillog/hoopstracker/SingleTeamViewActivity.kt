@@ -25,6 +25,10 @@ import kotlinx.android.synthetic.main.activity_single_team_view.*
 import kotlinx.android.synthetic.main.app_bar_single_team.*
 import kotlinx.android.synthetic.main.content_single_team.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
+import android.support.v4.content.IntentCompat
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+
 
 class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -96,7 +100,8 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
             }
             R.id.nav_logout-> {
                 LoginService().signOut()
-                startActivity(Intent(this, LoginActivity::class.java))
+                startActivity(Intent(this, LoginActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                 finish()
             }
         }

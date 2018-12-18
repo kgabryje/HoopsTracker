@@ -64,8 +64,5 @@ class LoginService {
 
     fun signOut() {
         mAuth.signOut()
-        TeamsService.followedTeams.clear()
-        GamesService.upcomingGames = listOf()
-        GamesService.finishedGames = listOf()
     }
 }
