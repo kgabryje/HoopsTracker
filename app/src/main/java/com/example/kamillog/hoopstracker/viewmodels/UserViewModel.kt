@@ -6,7 +6,7 @@ import com.example.kamillog.hoopstracker.models.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class HomeViewModel : ViewModel() {
+class UserViewModel : ViewModel() {
     private val mDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference.child("users")
     val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 

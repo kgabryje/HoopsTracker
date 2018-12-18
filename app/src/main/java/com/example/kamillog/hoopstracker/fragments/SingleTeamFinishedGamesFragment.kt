@@ -34,7 +34,7 @@ class SingleTeamFinishedGamesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.finished_games_fragment, container, false)
         recyclerView = view.findViewById(R.id.finishedGamesRecyclerView)
-        gamesAdapter = GamesAdapter(activity as Activity, GamesService.finishedGames)
+        gamesAdapter = GamesAdapter(activity as Activity, listOf())
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)

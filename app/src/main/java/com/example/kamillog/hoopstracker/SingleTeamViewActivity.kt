@@ -13,14 +13,13 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
-import com.example.kamillog.hoopstracker.adapters.HomeFragmentAdapter
 import com.example.kamillog.hoopstracker.adapters.SingleTeamFragmentAdapter
 import com.example.kamillog.hoopstracker.models.TeamItem
 import com.example.kamillog.hoopstracker.models.UserModel
-import com.example.kamillog.hoopstracker.viewmodels.HomeViewModel
-import kotlinx.android.synthetic.main.activity_home.*
+import com.example.kamillog.hoopstracker.services.LoginService
+import com.example.kamillog.hoopstracker.services.TeamsService
+import com.example.kamillog.hoopstracker.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.activity_single_team_view.*
-import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.app_bar_single_team.*
 import kotlinx.android.synthetic.main.content_single_team.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
@@ -28,15 +27,15 @@ import kotlinx.android.synthetic.main.nav_header_home.view.*
 class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var team: TeamItem
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_team_view)
         setSupportActionBar(toolbarSingleTeam)
         team = intent.getParcelableExtra("team") as TeamItem
-
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        supportActionBar?.title = "${team.city} ${team.name}"
+        viewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         viewModel.userModel().value = UserModel()
         viewModel.userModel().observe(this, Observer {
             navViewSingleTeam.setNavigationItemSelectedListener(this)
@@ -60,7 +59,7 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
         }
 
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayoutSingleTeam, toolbar, R.string.navigation_drawer_open,
+            this, drawerLayoutSingleTeam, toolbarSingleTeam, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
         drawerLayoutSingleTeam.addDrawerListener(toggle)
@@ -78,25 +77,25 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.nav_home -> {
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+            }
             R.id.nav_follow_teams -> {
                 startActivity(Intent(this, FollowTeamsActivity::class.java))
+                finish()
             }
             R.id.nav_my_teams -> {
                 startActivity(Intent(this, MyTeamsActivity::class.java))
+                finish()
             }
-
             R.id.nav_logout-> {
-                signOut()
+                LoginService().signOut()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
             }
         }
         drawerLayoutSingleTeam.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    private fun signOut(): Boolean {
-        viewModel.signOut()
-        startActivity(Intent(this@SingleTeamViewActivity, LoginActivity::class.java))
-        finish()
         return true
     }
 }

@@ -10,7 +10,7 @@ class ViewModelFactory(val context: Context, val type: String) : ViewModelProvid
             "Login" -> LoginViewModel(context) as T
             "Register" -> RegisterViewModel(context) as T
             "FollowTeams" -> FollowTeamsViewModel(context) as T
-            "Home" -> HomeViewModel() as T
+            "Home" -> UserViewModel() as T
             else -> throw IllegalArgumentException("Pass correct factory type")
         }
     }

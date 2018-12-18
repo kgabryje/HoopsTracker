@@ -11,7 +11,6 @@ class TeamsService {
         private val mDatabaseReference: DatabaseReference =
             FirebaseDatabase.getInstance().reference.child("teams")
         var teams: List<TeamItem> = listOf()
-        var teamBackgroundLogos: MutableList<Pair<String, ImageView>> = mutableListOf()
         var followedTeams: MutableList<TeamItem> = mutableListOf()
 
 
@@ -28,7 +27,6 @@ class TeamsService {
                         if (context != null) {
                             val img = ImageView(context)
                             Picasso.with(context).load(backgroundLogo).into(img)
-                            teamBackgroundLogos.add(Pair(name, img))
                         }
                     }
                     TeamsService.teams = teams

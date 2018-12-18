@@ -16,21 +16,24 @@ import android.view.View
 import android.widget.LinearLayout
 import com.example.kamillog.hoopstracker.adapters.HomeFragmentAdapter
 import com.example.kamillog.hoopstracker.models.UserModel
-import com.example.kamillog.hoopstracker.viewmodels.HomeViewModel
+import com.example.kamillog.hoopstracker.services.GamesService
+import com.example.kamillog.hoopstracker.services.LoginService
+import com.example.kamillog.hoopstracker.services.TeamsService
+import com.example.kamillog.hoopstracker.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.content_home.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         setSupportActionBar(toolbar)
         Log.d("home", "oncreate")
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         viewModel.userModel().value = UserModel()
         viewModel.userModel().observe(this, Observer {
             navView.setNavigationItemSelectedListener(this)
@@ -79,6 +82,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.nav_home -> {}
             R.id.nav_follow_teams -> {
                 startActivity(Intent(this, FollowTeamsActivity::class.java))
             }
@@ -87,47 +91,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_logout-> {
-                signOut()
+                LoginService().signOut()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun signOut(): Boolean {
-        viewModel.signOut()
-        startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
-        finish()
-        return true
-    }
-
-    override fun onDestroy() {
-        Log.d("home", "ondestroy")
-        super.onDestroy()
-    }
-
-    override fun onResume() {
-        Log.d("home", "onResume")
-        super.onResume()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("home", "onstart")
-    }
-
-    override fun onRestart() {
-        Log.d("home", "onrestart")
-        super.onRestart()
-    }
-
-    override fun onPause() {
-        Log.d("home", "onpause")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d("home", "onstop")
-        super.onStop()
     }
 }

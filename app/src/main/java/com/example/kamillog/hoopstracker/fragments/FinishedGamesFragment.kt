@@ -40,7 +40,6 @@ class FinishedGamesFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = gamesAdapter
             addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-
         }
         return view
     }
@@ -60,7 +59,7 @@ class FinishedGamesFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         if (TeamsService.followedTeams.size == 0) {
-            viewModel.loadFollowedTeams()
+            viewModel.loadFollowedTeams(true)
         } else {
             viewModel.getTeamLogs(TeamsService.followedTeams, true)
         }

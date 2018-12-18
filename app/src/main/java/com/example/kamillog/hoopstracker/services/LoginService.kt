@@ -2,7 +2,10 @@ package com.example.kamillog.hoopstracker.services
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatActivity
+import com.example.kamillog.hoopstracker.LoginActivity
 import com.example.kamillog.hoopstracker.R
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -57,5 +60,12 @@ class LoginService {
     fun logout(mAuth: FirebaseAuth, onSuccess: () -> Unit) {
         mAuth.signOut()
         onSuccess()
+    }
+
+    fun signOut() {
+        mAuth.signOut()
+        TeamsService.followedTeams.clear()
+        GamesService.upcomingGames = listOf()
+        GamesService.finishedGames = listOf()
     }
 }
