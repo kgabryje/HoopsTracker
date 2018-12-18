@@ -10,41 +10,46 @@ import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import com.example.kamillog.hoopstracker.adapters.HomeFragmentAdapter
+import com.example.kamillog.hoopstracker.adapters.SingleTeamFragmentAdapter
+import com.example.kamillog.hoopstracker.models.TeamItem
 import com.example.kamillog.hoopstracker.models.UserModel
 import com.example.kamillog.hoopstracker.viewmodels.HomeViewModel
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_single_team_view.*
 import kotlinx.android.synthetic.main.app_bar_home.*
-import kotlinx.android.synthetic.main.content_home.*
+import kotlinx.android.synthetic.main.app_bar_single_team.*
+import kotlinx.android.synthetic.main.content_single_team.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    lateinit var team: TeamItem
     private lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-        setSupportActionBar(toolbar)
-        Log.d("home", "oncreate")
+        setContentView(R.layout.activity_single_team_view)
+        setSupportActionBar(toolbarSingleTeam)
+        team = intent.getParcelableExtra("team") as TeamItem
+
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         viewModel.userModel().value = UserModel()
         viewModel.userModel().observe(this, Observer {
-            navView.setNavigationItemSelectedListener(this)
-            navView.getHeaderView(0).navbarEmailID.text = it?.email
+            navViewSingleTeam.setNavigationItemSelectedListener(this)
+            navViewSingleTeam.getHeaderView(0).navbarEmailID.text = it?.email
         })
         viewModel.setUserData()
 
-        //Add adapter to pageView
-        homeViewPager.adapter = HomeFragmentAdapter(supportFragmentManager)
-        homeTab.setupWithViewPager(homeViewPager)
-        val root: View = homeTab.getChildAt(0)
+        singleTeamViewPager.adapter = SingleTeamFragmentAdapter(supportFragmentManager)
+        singleTeamTab.setupWithViewPager(singleTeamViewPager)
+        val root: View = singleTeamTab.getChildAt(0)
         if (root is LinearLayout) {
             val drawable = GradientDrawable().apply {
-                setColor(ContextCompat.getColor(this@HomeActivity, R.color.colorWhite))
+                setColor(ContextCompat.getColor(this@SingleTeamViewActivity, R.color.colorWhite))
                 setSize(3, 2)
             }
             root.run {
@@ -55,27 +60,21 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open,
+            this, drawerLayoutSingleTeam, toolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        drawerLayout.addDrawerListener(toggle)
+        drawerLayoutSingleTeam.addDrawerListener(toggle)
         toggle.syncState()
-
     }
 
     override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
+        if (drawerLayoutSingleTeam.isDrawerOpen(GravityCompat.START)) {
+            drawerLayoutSingleTeam.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
             finish()
         }
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        menuInflater.inflate(R.menu.home, menu)
-//        return true
-//    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -90,44 +89,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 signOut()
             }
         }
-        drawerLayout.closeDrawer(GravityCompat.START)
+        drawerLayoutSingleTeam.closeDrawer(GravityCompat.START)
         return true
     }
 
     private fun signOut(): Boolean {
         viewModel.signOut()
-        startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
+        startActivity(Intent(this@SingleTeamViewActivity, LoginActivity::class.java))
         finish()
         return true
-    }
-
-    override fun onDestroy() {
-        Log.d("home", "ondestroy")
-        super.onDestroy()
-    }
-
-    override fun onResume() {
-        Log.d("home", "onResume")
-        super.onResume()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("home", "onstart")
-    }
-
-    override fun onRestart() {
-        Log.d("home", "onrestart")
-        super.onRestart()
-    }
-
-    override fun onPause() {
-        Log.d("home", "onpause")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d("home", "onstop")
-        super.onStop()
     }
 }

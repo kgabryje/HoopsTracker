@@ -33,7 +33,7 @@ class UpcomingGamesViewModel : ViewModel() {
         }
 
         val teamsString = teams.joinToString(",", transform = { teamItem ->
-            "${teamItem.city.replace("\\s", "")}-${teamItem.name.replace("\\s", "")}"
+            "${teamItem.city.replace(" ", "")}-${teamItem.name.replace(" ", "")}"
         })
         val call = apiConnector.getSchedule("latest", teamsString, "from-today-to-7-days-from-now")
         call.enqueue(object : Callback<ScheduleEndpoint> {

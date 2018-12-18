@@ -9,6 +9,7 @@ import com.example.kamillog.hoopstracker.models.GameItem
 import com.example.kamillog.hoopstracker.viewholders.GameViewHolder
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class GamesAdapter(
     private val context : Context,
@@ -32,7 +33,7 @@ class GamesAdapter(
             setAwayTeamName(model.awayTeam.name)
             setScore(model.homeTeamScore, model.awayTeamScore)
             setGameDate(model.date.format(
-                DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm")
+                DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mma", Locale.FRANCE)
                     .withZone(ZoneId.systemDefault())
             ))
         }

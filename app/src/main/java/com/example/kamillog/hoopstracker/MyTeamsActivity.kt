@@ -1,5 +1,6 @@
 package com.example.kamillog.hoopstracker
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -39,6 +40,7 @@ class MyTeamsActivity : AppCompatActivity() {
     }
 
     fun onClick(team: TeamItem) {
-
+        val intent = Intent(this, SingleTeamViewActivity::class.java).putExtra("team", team)
+        startActivity(intent)
     }
 }

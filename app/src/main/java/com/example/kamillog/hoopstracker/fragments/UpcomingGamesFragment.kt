@@ -23,7 +23,7 @@ class UpcomingGamesFragment : Fragment() {
         fun newInstance() = UpcomingGamesFragment()
     }
 
-    private lateinit var viewModel: UpcomingGamesViewModel
+    lateinit var viewModel: UpcomingGamesViewModel
     private lateinit var gamesAdapter: GamesAdapter
 
     private lateinit var recyclerView: RecyclerView

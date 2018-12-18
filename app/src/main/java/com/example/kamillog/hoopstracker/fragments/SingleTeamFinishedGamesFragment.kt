@@ -13,14 +13,14 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.example.kamillog.hoopstracker.R
+import com.example.kamillog.hoopstracker.SingleTeamViewActivity
 import com.example.kamillog.hoopstracker.adapters.GamesAdapter
 import com.example.kamillog.hoopstracker.services.GamesService
-import com.example.kamillog.hoopstracker.services.TeamsService
 
-class FinishedGamesFragment : Fragment() {
+class SingleTeamFinishedGamesFragment : Fragment() {
 
     companion object {
-        fun newInstance() = FinishedGamesFragment()
+        fun newInstance() = SingleTeamFinishedGamesFragment()
     }
 
     private lateinit var gamesAdapter: GamesAdapter
@@ -52,18 +52,7 @@ class FinishedGamesFragment : Fragment() {
             gamesAdapter.gameList = it!!
             gamesAdapter.notifyDataSetChanged()
         })
-        viewModel.followedTeams().observe(this, Observer {
-            viewModel.getTeamLogs(it!!)
-        })
+        val team = (activity as SingleTeamViewActivity).team
+        viewModel.getTeamLogs(listOf(team), true)
     }
-
-    override fun onStart() {
-        super.onStart()
-        if (TeamsService.followedTeams.size == 0) {
-            viewModel.loadFollowedTeams()
-        } else {
-            viewModel.getTeamLogs(TeamsService.followedTeams, true)
-        }
-    }
-
 }

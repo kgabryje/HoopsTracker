@@ -13,18 +13,18 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.example.kamillog.hoopstracker.R
+import com.example.kamillog.hoopstracker.SingleTeamViewActivity
 import com.example.kamillog.hoopstracker.adapters.GamesAdapter
 import com.example.kamillog.hoopstracker.services.GamesService
-import com.example.kamillog.hoopstracker.services.TeamsService
 
-class FinishedGamesFragment : Fragment() {
+class SingleTeamUpcomingGamesFragment : Fragment() {
 
     companion object {
-        fun newInstance() = FinishedGamesFragment()
+        fun newInstance() = SingleTeamUpcomingGamesFragment()
     }
 
     private lateinit var gamesAdapter: GamesAdapter
-    lateinit var viewModel: FinishedGamesViewModel
+    lateinit var viewModel: UpcomingGamesViewModel
 
     private lateinit var recyclerView: RecyclerView
 
@@ -32,38 +32,27 @@ class FinishedGamesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.finished_games_fragment, container, false)
-        recyclerView = view.findViewById(R.id.finishedGamesRecyclerView)
-        gamesAdapter = GamesAdapter(activity as Activity, GamesService.finishedGames)
+        val view = inflater.inflate(R.layout.upcoming_games_fragment, container, false)
+        recyclerView = view.findViewById(R.id.upcomingGamesRecyclerView)
+        gamesAdapter = GamesAdapter(activity as Activity, listOf())
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
             adapter = gamesAdapter
             addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-
         }
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(FinishedGamesViewModel::class.java)
-        viewModel.finishedGames().observe(this, Observer {
+        viewModel = ViewModelProviders.of(this).get(UpcomingGamesViewModel::class.java)
+        viewModel.upcomingGames().observe(this, Observer {
             gamesAdapter.gameList = it!!
             gamesAdapter.notifyDataSetChanged()
         })
-        viewModel.followedTeams().observe(this, Observer {
-            viewModel.getTeamLogs(it!!)
-        })
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (TeamsService.followedTeams.size == 0) {
-            viewModel.loadFollowedTeams()
-        } else {
-            viewModel.getTeamLogs(TeamsService.followedTeams, true)
-        }
+        val team = (activity as SingleTeamViewActivity).team
+        viewModel.getUpcomingGames(listOf(team), true)
     }
 
 }
