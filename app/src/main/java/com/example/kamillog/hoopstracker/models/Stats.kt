@@ -14,7 +14,7 @@ data class Stats(
     @SerializedName("FtPct") val freeThrowPercent: StatItem = StatItem(),
     @SerializedName("Reb") val rebounds: StatItem = StatItem(),
     @SerializedName("Ast") val assists: StatItem = StatItem(),
-    @SerializedName("Pst") val points: StatItem = StatItem(),
+    @SerializedName("Pts") val points: StatItem = StatItem(),
     @SerializedName("Stl") val steals: StatItem = StatItem(),
     @SerializedName("Blk") val blocks: StatItem = StatItem(),
     @SerializedName("MinSeconds") val seconds: StatItem = StatItem()

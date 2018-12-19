@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-        android:layout_height="wrap_content"
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    <TableRow >
+>
+    <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/boxscore_relative_layout">
+        <TableLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/boxscore_table_layout"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_centerHorizontal="true"/>
 
-    </TableRow>
-</TableLayout>
+        <TextView
+                android:id="@+id/table_home_team_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/boxscore_table_layout"
+                android:layout_marginTop="40dp"/>
+        <TableLayout
+                android:id="@+id/home_stats_table_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/table_home_team_name"
+                android:layout_marginTop="5dp"
+        />
+
+        <TextView
+                android:id="@+id/table_away_team_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_stats_table_layout"
+                android:layout_marginTop="40dp"/>
+        <TableLayout
+                android:id="@+id/away_stats_table_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/table_away_team_name"
+                android:layout_marginTop="5dp"
+        />
+    </RelativeLayout>
+</ScrollView>
