@@ -31,7 +31,7 @@
         </activity>
         <activity
                 android:name=".FollowTeamsActivity"
-                android:label="Follow teams">
+                android:label="Track teams">
         </activity>
         <activity
                 android:name=".MyTeamsActivity"

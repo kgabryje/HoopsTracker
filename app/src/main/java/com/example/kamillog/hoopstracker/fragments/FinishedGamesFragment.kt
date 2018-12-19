@@ -65,6 +65,13 @@ class FinishedGamesFragment : Fragment() {
                 viewModel.getTeamLogs(it)
             }
         })
+        if (TeamsService.followedTeams.size == 0) {
+            viewModel.loadFollowedTeams(true)
+        } else {
+            noTeamsFollowedTextView.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            viewModel.getTeamLogs(TeamsService.followedTeams, true)
+        }
     }
 
     override fun onResume() {

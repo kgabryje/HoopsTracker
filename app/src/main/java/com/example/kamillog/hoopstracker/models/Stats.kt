@@ -17,5 +17,6 @@ data class Stats(
     @SerializedName("Pts") val points: StatItem = StatItem(),
     @SerializedName("Stl") val steals: StatItem = StatItem(),
     @SerializedName("Blk") val blocks: StatItem = StatItem(),
-    @SerializedName("MinSeconds") val seconds: StatItem = StatItem()
+    @SerializedName("MinSeconds") val seconds: StatItem = StatItem(),
+    @SerializedName("PlusMinus") val plusMinus: StatItem = StatItem()
 )

@@ -38,7 +38,7 @@ class GamesViewModel : ViewModel() {
         val teamsString = teams.joinToString(",", transform = { teamItem ->
             "${teamItem.city.replace(" ", "")}-${teamItem.name.replace(" ", "")}"
         })
-        val call = apiConnector.getTeamGameLogs("latest", teamsString, "since-3-days-ago")
+        val call = apiConnector.getTeamGameLogs("latest", teamsString, "since-7-days-ago")
         call.enqueue(object : Callback<TeamGameLogsEndpoint> {
             override fun onResponse(call: Call<TeamGameLogsEndpoint>, response: Response<TeamGameLogsEndpoint>) {
                 val res = response.body()?.teamgamelogs?.gamelogs?.map {

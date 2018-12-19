@@ -24,8 +24,8 @@ class FollowTeamsViewModel(context: Context) : ViewModel() {
         followedTeamsLiveData.value = mutableListOf()
     }
 
-    fun loadFollowedTeams() {
-        if (TeamsService.followedTeams.size > 0) {
+    fun loadFollowedTeams(reload: Boolean = false) {
+        if (TeamsService.followedTeams.size > 0 && !reload) {
             followedTeamsLiveData.value = TeamsService.followedTeams
             return
         }
@@ -39,10 +39,12 @@ class FollowTeamsViewModel(context: Context) : ViewModel() {
                 if (snapshot.value == null) {
                     return
                 }
-                followedTeamsLiveData.value = (snapshot.value as ArrayList<*>).map {
+                val teamList = (snapshot.value as ArrayList<*>).map {
                     val team = it as Map<String, String>
                     TeamItem(team["city"]!!, team["name"]!!, team["logo"]!!, team["backgroundLogo"]!!)
                 }.toMutableList()
+                followedTeamsLiveData.value = teamList
+                TeamsService.followedTeams = teamList
             }
         })
     }

@@ -27,14 +27,16 @@ class TeamsAdapter(
         val viewHolder = holder as TeamsViewHolder
         val model: TeamItem = teamsList[position]
         viewHolder.run {
-            setTeamLogo(context, model.backgroundLogo)
-            if (TeamsService.followedTeams.contains(model) && displayChecks) {
-                itemView.check.visibility = View.VISIBLE
-            } else {
-                itemView.check.visibility = View.GONE
-            }
-            itemView.setOnClickListener {
-                onItemClick(model)
+            itemView.check.visibility = View.GONE
+            setTeamLogo(context, model.backgroundLogo) {
+                if (TeamsService.followedTeams.contains(model) && displayChecks) {
+                    itemView.check.visibility = View.VISIBLE
+                } else {
+                    itemView.check.visibility = View.GONE
+                }
+                itemView.setOnClickListener {
+                    onItemClick(model)
+                }
             }
         }
     }

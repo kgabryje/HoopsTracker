@@ -1,49 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
->
-    <RelativeLayout
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                                        xmlns:tools="http://schemas.android.com/tools"
+                                        android:id="@+id/drawerLayoutBoxscore"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:fitsSystemWindows="true"
+                                        tools:openDrawer="start"
+                                        android:keepScreenOn="true">
+    <android.support.design.widget.CoordinatorLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_height="wrap_content"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:id="@+id/boxscore_relative_layout">
-        <TableLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/boxscore_table_layout"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_centerHorizontal="true"/>
+            tools:context=".BoxscoreActivity">
 
-        <TextView
-                android:id="@+id/table_home_team_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/boxscore_table_layout"
-                android:layout_marginTop="40dp"/>
-        <TableLayout
-                android:id="@+id/home_stats_table_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/table_home_team_name"
-                android:layout_marginTop="5dp"
-        />
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/boxscore_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-        <TextView
-                android:id="@+id/table_away_team_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/home_stats_table_layout"
-                android:layout_marginTop="40dp"/>
-        <TableLayout
-                android:id="@+id/away_stats_table_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/table_away_team_name"
-                android:layout_marginTop="5dp"
-        />
-    </RelativeLayout>
-</ScrollView>
+            <android.support.design.widget.AppBarLayout
+                    android:id="@+id/barLayoutBoxscore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbarBoxscore"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?attr/colorPrimary"
+                        app:theme="@style/ToolbarItemColor"
+                        app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <ScrollView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/barLayoutBoxscore">
+                <HorizontalScrollView android:layout_width="match_parent"
+                                      android:layout_height="wrap_content">
+                    <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/boxscore_relative_layout">
+                        <TableLayout
+                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/boxscore_table_layout"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:divider="@color/colorPrimary"
+                                android:showDividers="middle"/>
+
+                        <TableLayout
+                                android:id="@+id/stats_table_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center_horizontal"
+                                android:layout_below="@id/boxscore_table_layout"
+                                android:layout_marginTop="40dp"
+                                android:divider="@color/colorPrimary"
+                                android:showDividers="middle"/>
+                    </RelativeLayout>
+                </HorizontalScrollView>
+            </ScrollView>
+
+
+        </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.design.widget.NavigationView
+            android:id="@+id/navViewBoxscore"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_home"
+            app:menu="@menu/activity_home_drawer"/>
+</android.support.v4.widget.DrawerLayout>

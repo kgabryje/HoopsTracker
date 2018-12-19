@@ -57,8 +57,8 @@ class MyTeamsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         toggle.syncState()
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         if (TeamsService.followedTeams.isEmpty()) {
             myTeamsRecyclerView.visibility = View.GONE
             my_teams_no_teams_followed.visibility = View.VISIBLE
