@@ -35,7 +35,7 @@ class BoxscoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         gameItem = intent.getParcelableExtra("game")
 
-        supportActionBar!!.title = "${gameItem.homeTeam.name} v. ${gameItem.awayTeam.name}"
+        supportActionBar!!.title = "${gameItem.homeTeam.name} vs ${gameItem.awayTeam.name}"
 
         viewModel = ViewModelProviders.of(this).get(BoxscoreViewModel::class.java)
 

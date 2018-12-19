@@ -5,13 +5,18 @@ import android.widget.ImageView
 import com.example.kamillog.hoopstracker.models.TeamItem
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
+import kotlin.properties.Delegates
 
 class TeamsService {
     companion object {
         private val mDatabaseReference: DatabaseReference =
             FirebaseDatabase.getInstance().reference.child("teams")
         var teams: List<TeamItem> = listOf()
-        var followedTeams: MutableList<TeamItem> = mutableListOf()
+        var followedTeams: MutableList<TeamItem> by Delegates.observable(
+            mutableListOf()
+        ) { property, oldValue, newValue ->
+            newValue.sortBy { it.city }
+        }
 
 
         fun loadTeams(context: Context? = null) {
