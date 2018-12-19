@@ -39,6 +39,8 @@
         </activity>
         <activity android:name=".SingleTeamViewActivity">
         </activity>
+        <activity android:name=".BoxscoreActivity">
+        </activity>
     </application>
 
 </manifest>

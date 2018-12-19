@@ -1,9 +1,11 @@
 package com.example.kamillog.hoopstracker.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.kamillog.hoopstracker.BoxscoreActivity
 import com.example.kamillog.hoopstracker.R
 import com.example.kamillog.hoopstracker.models.GameItem
 import com.example.kamillog.hoopstracker.viewholders.GameViewHolder
@@ -36,6 +38,12 @@ class GamesAdapter(
                 DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mma", Locale.FRANCE)
                     .withZone(ZoneId.systemDefault())
             ))
+
+            itemView.setOnClickListener {
+                if (model.awayTeamScore != "" && model.homeTeamScore != "") {
+                    context.startActivity(Intent(context, BoxscoreActivity::class.java).putExtra("game", model))
+                }
+            }
         }
     }
 

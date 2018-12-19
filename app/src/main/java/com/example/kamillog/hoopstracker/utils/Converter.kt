@@ -15,11 +15,11 @@ class Converter {
         val homeTeamScore: String
         val awayTeamScore: String
         if (observedTeam == homeTeam) {
-            homeTeamScore = gameLog.points.Pts.points
-            awayTeamScore = gameLog.points.PtsAgainst.points
+            homeTeamScore = gameLog.stats.Pts.points
+            awayTeamScore = gameLog.stats.PtsAgainst.points
         } else {
-            homeTeamScore = gameLog.points.PtsAgainst.points
-            awayTeamScore = gameLog.points.Pts.points
+            homeTeamScore = gameLog.stats.PtsAgainst.points
+            awayTeamScore = gameLog.stats.Pts.points
         }
         val date = LocalDateTime.parse(
             "${gameLog.game.date} ${gameLog.game.time}",

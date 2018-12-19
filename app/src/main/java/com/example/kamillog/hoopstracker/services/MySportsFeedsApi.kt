@@ -1,5 +1,6 @@
 package com.example.kamillog.hoopstracker.services
 
+import com.example.kamillog.hoopstracker.models.GameBoxScoreEndpoint
 import com.example.kamillog.hoopstracker.models.ScheduleEndpoint
 import com.example.kamillog.hoopstracker.models.TeamGameLogsEndpoint
 import retrofit2.Call
@@ -21,4 +22,12 @@ interface MySportsFeedsApi {
         @Query("team") teamList: String,
         @Query("date") dateRange: String
     ): Call<ScheduleEndpoint>
+
+    @GET("{season_name}/game_boxscore.json")
+    fun getBoxscore(
+        @Path("season_name") seasonName: String,
+        @Query("gameid") gameId: String,
+        @Query("teamstats") teamsStats: String,
+        @Query("playerstats") playerStats: String
+    ): Call<GameBoxScoreEndpoint>
 }
