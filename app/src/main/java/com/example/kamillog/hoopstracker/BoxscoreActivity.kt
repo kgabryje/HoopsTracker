@@ -42,6 +42,7 @@ class BoxscoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         viewModel.boxscore().observe(this, Observer {
             if (it != null) {
                 boxscore_table_layout.removeAllViews()
+                stats_table_layout.removeAllViews()
                 createTableForQuarters(it.quartersItems)
                 createBoxscore(it.homePlayerEntry, it.awayPlayerEntry)
             }

@@ -14,7 +14,7 @@ class TeamsService {
         var teams: List<TeamItem> = listOf()
         var followedTeams: MutableList<TeamItem> by Delegates.observable(
             mutableListOf()
-        ) { property, oldValue, newValue ->
+        ) { _, _, newValue ->
             newValue.sortBy { it.city }
         }
 
