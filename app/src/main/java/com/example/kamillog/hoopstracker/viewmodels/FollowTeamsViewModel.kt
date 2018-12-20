@@ -55,15 +55,18 @@ class FollowTeamsViewModel(context: Context) : ViewModel() {
     }
 
     fun toggleTeam(team: TeamItem) {
-        if (followedTeamsLiveData.value!!.contains(team)) {
-            followedTeamsLiveData.value!!.remove(team)
-            toastMessageHandler.showToastMessage("${team.city} ${team.name} removed from tracked teams")
-        } else {
-            followedTeamsLiveData.value!!.add(team)
-            toastMessageHandler.showToastMessage("${team.city} ${team.name} added to tracked teams")
+        followedTeamsLiveData.value?.let {
+            if (it.contains(team)) {
+                it.remove(team)
+                toastMessageHandler.showToastMessage("${team.city} ${team.name} removed from tracked teams")
+            } else {
+                it.add(team)
+                toastMessageHandler.showToastMessage("${team.city} ${team.name} added to tracked teams")
+            }
+            TeamsService.followedTeams = it
+            followedTeamsLiveData.value = it
+            saveFollowedTeams()
         }
-        TeamsService.followedTeams = followedTeamsLiveData.value!!
-        followedTeamsLiveData.value = followedTeamsLiveData.value
-        saveFollowedTeams()
+
     }
 }

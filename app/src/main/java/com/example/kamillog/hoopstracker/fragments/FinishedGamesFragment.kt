@@ -52,11 +52,14 @@ class FinishedGamesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
         viewModel.finishedGames().observe(this, Observer {
-            gamesAdapter.gameList = it!!
-            gamesAdapter.notifyDataSetChanged()
+            if (it != null) {
+                gamesAdapter.gameList = it
+                gamesAdapter.notifyDataSetChanged()
+            }
+
         })
         viewModel.followedTeams().observe(this, Observer {
-            if (it!!.isEmpty()) {
+            if (it?.isEmpty() != false) {
                 recyclerView.visibility = View.GONE
                 noTeamsFollowedTextView.visibility = View.VISIBLE
             } else {

@@ -53,17 +53,21 @@ class UpcomingGamesFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
         viewModel.upcomingGames().observe(this, Observer {
-            gamesAdapter.gameList = it!!
-            gamesAdapter.notifyDataSetChanged()
+            if (it != null) {
+                gamesAdapter.gameList = it
+                gamesAdapter.notifyDataSetChanged()
+            }
         })
         viewModel.followedTeams().observe(this, Observer {
-            if (it!!.isEmpty()) {
-                recyclerView.visibility = View.GONE
-                noTeamsFollowedTextView.visibility = View.VISIBLE
-            } else {
-                noTeamsFollowedTextView.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
-                viewModel.getUpcomingGames(it)
+            it?.run {
+                if (it.isEmpty()) {
+                    recyclerView.visibility = View.GONE
+                    noTeamsFollowedTextView.visibility = View.VISIBLE
+                } else {
+                    noTeamsFollowedTextView.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
+                    viewModel.getUpcomingGames(it)
+                }
             }
         })
     }

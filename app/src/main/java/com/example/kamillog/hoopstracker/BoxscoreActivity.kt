@@ -40,9 +40,11 @@ class BoxscoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         viewModel = ViewModelProviders.of(this).get(BoxscoreViewModel::class.java)
 
         viewModel.boxscore().observe(this, Observer {
-            boxscore_table_layout.removeAllViews()
-            createTableForQuarters(it!!.quartersItems)
-            createBoxscore(it.homePlayerEntry, it.awayPlayerEntry)
+            if (it != null) {
+                boxscore_table_layout.removeAllViews()
+                createTableForQuarters(it.quartersItems)
+                createBoxscore(it.homePlayerEntry, it.awayPlayerEntry)
+            }
         })
         viewModel.getBoxscore(gameItem)
 

@@ -49,8 +49,10 @@ class SingleTeamFinishedGamesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
         viewModel.finishedGames().observe(this, Observer {
-            gamesAdapter.gameList = it!!
-            gamesAdapter.notifyDataSetChanged()
+            if (it != null) {
+                gamesAdapter.gameList = it
+                gamesAdapter.notifyDataSetChanged()
+            }
         })
         val team = (activity as SingleTeamViewActivity).team
         viewModel.getTeamLogs(listOf(team), true)

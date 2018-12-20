@@ -23,19 +23,21 @@ class BoxscoreViewModel: ViewModel() {
         val call = apiConnector.getBoxscore("latest", game.id, "none", playerStatsString)
         call.enqueue(object: Callback<GameBoxScoreEndpoint> {
             override fun onResponse(call: Call<GameBoxScoreEndpoint>, response: Response<GameBoxScoreEndpoint>) {
-                val awayPlayersEntry = response.body()!!.gameBoxScore.awayTeam.awayPlayers.playerEntry
-                val homePlayersEntry = response.body()!!.gameBoxScore.homeTeam.homePlayers.playerEntry
-                val quarters = response.body()!!.gameBoxScore.quarterSummary.quarter
+                response.body()?.let {
+                    val awayPlayersEntry = it.gameBoxScore.awayTeam.awayPlayers.playerEntry
+                    val homePlayersEntry = it.gameBoxScore.homeTeam.homePlayers.playerEntry
+                    val quarters = it.gameBoxScore.quarterSummary.quarter
 
-                boxscoreLiveData.value = BoxscoreItem(
-                    game.homeTeam,
-                    game.homeTeamScore,
-                    homePlayersEntry,
-                    game.awayTeam,
-                    game.awayTeamScore,
-                    awayPlayersEntry,
-                    quarters
-                )
+                    boxscoreLiveData.value = BoxscoreItem(
+                        game.homeTeam,
+                        game.homeTeamScore,
+                        homePlayersEntry,
+                        game.awayTeam,
+                        game.awayTeamScore,
+                        awayPlayersEntry,
+                        quarters
+                    )
+                }
             }
 
             override fun onFailure(call: Call<GameBoxScoreEndpoint>, t: Throwable) {

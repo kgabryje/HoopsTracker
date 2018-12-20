@@ -48,8 +48,10 @@ class SingleTeamUpcomingGamesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
         viewModel.upcomingGames().observe(this, Observer {
-            gamesAdapter.gameList = it!!
-            gamesAdapter.notifyDataSetChanged()
+            if (it != null) {
+                gamesAdapter.gameList = it
+                gamesAdapter.notifyDataSetChanged()
+            }
         })
         val team = (activity as SingleTeamViewActivity).team
         viewModel.getUpcomingGames(listOf(team), true)
