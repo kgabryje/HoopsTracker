@@ -38,7 +38,7 @@ class Converter {
         return GameItem(gameApi.id, date, homeTeam, awayTeam)
     }
 
-    fun teamApiToTeamItem(teamApi: TeamApi): TeamItem {
-        return TeamsService.teams.find { teamItem -> teamItem.name == teamApi.Name }!!
+    private fun teamApiToTeamItem(teamApi: TeamApi): TeamItem {
+        return TeamsService.teams.find { teamItem -> teamItem.name == teamApi.Name } ?: TeamItem()
     }
 }
