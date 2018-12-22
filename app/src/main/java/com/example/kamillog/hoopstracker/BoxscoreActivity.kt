@@ -136,7 +136,11 @@ class BoxscoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             quarterAwayScore.setPadding(30, 0, 30, 0)
 
             val quarterNumber = TextView(this)
-            quarterNumber.text = "Q${quarter.number}"
+            if (quarter.number.toInt() < 5) {
+                quarterNumber.text = "Q${quarter.number}"
+            } else {
+                quarterNumber.text = "OT${quarter.number.toInt() - 4}"
+            }
             quarterNumber.setPadding(30, 0, 30, 0)
 
             tableRowHome.addView(quarterHomeScore)
@@ -205,8 +209,12 @@ class BoxscoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             val minutesTextView = TextView(this)
             minutesTextView.setPadding(30, 0, 30, 0)
             val seconds: Int = entry.stats.seconds.value.toInt()
-            val minutesString = (seconds/60).toString()
+
+            var minutesString = (seconds/60).toString()
             var secondsToString = (seconds%60).toString()
+            if (minutesString.length == 1) {
+                minutesString = "0" + minutesString
+            }
             if (secondsToString.length == 1) {
                 secondsToString = "0" + secondsToString
             }
