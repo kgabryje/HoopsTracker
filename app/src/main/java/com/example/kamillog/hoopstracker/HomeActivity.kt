@@ -118,7 +118,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_logout -> {
-                LoginService().signOut()
+                LoginService.signOut()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }

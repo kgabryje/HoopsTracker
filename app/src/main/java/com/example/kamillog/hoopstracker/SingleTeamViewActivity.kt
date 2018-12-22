@@ -97,7 +97,7 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
                 finish()
             }
             R.id.nav_logout-> {
-                LoginService().signOut()
+                LoginService.signOut()
                 startActivity(Intent(this, LoginActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                 finish()
