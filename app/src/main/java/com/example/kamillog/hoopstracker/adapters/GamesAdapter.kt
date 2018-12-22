@@ -27,10 +27,10 @@ class GamesAdapter(
         val viewHolder = holder as GameViewHolder
         val model: GameItem = gameList[position]
         viewHolder.run {
-            setHomeTeamLogo(context, model.homeTeam.logo)
+            setHomeTeamLogo(model.homeTeam.logo)
             setHomeTeamCity(model.homeTeam.city)
             setHomeTeamName(model.homeTeam.name)
-            setAwayTeamLogo(context, model.awayTeam.logo)
+            setAwayTeamLogo(model.awayTeam.logo)
             setAwayTeamCity(model.awayTeam.city)
             setAwayTeamName(model.awayTeam.name)
             setScore(model.homeTeamScore, model.awayTeamScore)

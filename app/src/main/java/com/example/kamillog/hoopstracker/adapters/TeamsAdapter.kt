@@ -28,7 +28,7 @@ class TeamsAdapter(
         val model: TeamItem = teamsList[position]
         viewHolder.run {
             itemView.check.visibility = View.GONE
-            setTeamLogo(context, model.backgroundLogo) {
+            setTeamLogo(model.backgroundLogo) {
                 if (TeamsService.followedTeams.contains(model) && displayChecks) {
                     itemView.check.visibility = View.VISIBLE
                 } else {

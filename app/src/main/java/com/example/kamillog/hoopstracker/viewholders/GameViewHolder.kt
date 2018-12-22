@@ -1,6 +1,5 @@
 package com.example.kamillog.hoopstracker.viewholders
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
@@ -9,10 +8,10 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.game_item.view.*
 
 class GameViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-    fun setHomeTeamLogo(context: Context, homeTeamLogo: String) {
+    fun setHomeTeamLogo(homeTeamLogo: String) {
         val homeTeamLogoView: ImageView = view.home_team_logo
         homeTeamLogo.let {
-            Picasso.with(context).load(it).into(homeTeamLogoView)
+            Picasso.get().load(it).into(homeTeamLogoView)
         }
     }
 
@@ -26,10 +25,10 @@ class GameViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         nameTextView.text = city
     }
 
-    fun setAwayTeamLogo(context: Context, awayTeamLogo: String) {
+    fun setAwayTeamLogo(awayTeamLogo: String) {
         val awayTeamLogoView: ImageView = view.away_team_logo
         awayTeamLogo.let {
-            Picasso.with(context).load(it).into(awayTeamLogoView)
+            Picasso.get().load(it).into(awayTeamLogoView)
         }
     }
 
