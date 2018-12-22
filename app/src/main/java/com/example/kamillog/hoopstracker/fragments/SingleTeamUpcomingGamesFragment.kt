@@ -24,7 +24,7 @@ class SingleTeamUpcomingGamesFragment : Fragment() {
     }
 
     private lateinit var gamesAdapter: GamesAdapter
-    lateinit var viewModel: GamesViewModel
+    private lateinit var viewModel: GamesViewModel
 
     private lateinit var recyclerView: RecyclerView
 

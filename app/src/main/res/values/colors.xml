@@ -2,20 +2,9 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="darkLight">#98A2A1</color>
 
     <color name="deepPurple">#7B1FA2</color>
-    <color name="deepOrange">#F57C00</color>
-    <color name="deepBlue">#8de5ff</color>
-    <color name="deepGrey">#ca4198</color>
-    <color name="oceanGreen">#22cfff</color>
-    <color name="darkGreen">#0b9741</color>
-    <color name="darkBrown">#efbf7c</color>
-    <color name="deepGreen">#6cbebc</color>
 
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorTransparentWhite">#CCCCCC</color>
     <color name="tabHighlightColor">#fbffd3</color>
-    <color name="redFloating">#F44336</color>
 </resources>
