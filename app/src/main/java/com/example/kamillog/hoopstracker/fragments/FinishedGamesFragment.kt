@@ -50,7 +50,9 @@ class FinishedGamesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
+        activity?.let { parent ->
+            viewModel = ViewModelProviders.of(parent).get(GamesViewModel::class.java)
+        }
         viewModel.finishedGames().observe(this, Observer {
             if (it != null) {
                 gamesAdapter.gameList = it
@@ -68,23 +70,13 @@ class FinishedGamesFragment : Fragment() {
                 viewModel.getTeamLogs(it)
             }
         })
-        if (TeamsService.followedTeams.size == 0) {
-            viewModel.loadFollowedTeams(true)
-        } else {
-            noTeamsFollowedTextView.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
-            viewModel.getTeamLogs(TeamsService.followedTeams, true)
-        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (TeamsService.followedTeams.size == 0) {
-            viewModel.loadFollowedTeams(true)
-        } else {
+        if (TeamsService.followedTeams.size > 0) {
             noTeamsFollowedTextView.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
-            viewModel.getTeamLogs(TeamsService.followedTeams, true)
         }
     }
 }

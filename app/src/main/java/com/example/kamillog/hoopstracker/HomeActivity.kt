@@ -10,7 +10,6 @@ import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -37,7 +36,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         setSupportActionBar(toolbar)
-        Log.d("home", "oncreate")
         viewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
         viewModel.userModel().value = UserModel()
         viewModel.userModel().observe(this, Observer {
@@ -69,11 +67,20 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        if (TeamsService.followedTeams.size == 0) {
+            gamesViewModel.loadFollowedTeams(true)
+        } else {
+            gamesViewModel.getUpcomingGames(TeamsService.followedTeams, TeamsService.followedTeamsChanged)
+            gamesViewModel.getTeamLogs(TeamsService.followedTeams, TeamsService.followedTeamsChanged)
+            TeamsService.followedTeamsChanged = false
+        }
     }
 
     override fun onDestroy() {
-        Log.d("home", "ondestroy")
         TeamsService.followedTeams.clear()
         GamesService.finishedGames = listOf()
         GamesService.upcomingGames = listOf()

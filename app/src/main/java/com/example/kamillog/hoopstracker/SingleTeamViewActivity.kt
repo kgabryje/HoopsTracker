@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.nav_header_home.view.*
 
 
 class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
     lateinit var team: TeamItem
     private lateinit var viewModel: UserViewModel
     private lateinit var gamesViewModel: GamesViewModel
@@ -114,8 +113,8 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.refresh_btn -> {
-            gamesViewModel.getUpcomingGames(listOf(team), true)
-            gamesViewModel.getTeamLogs(listOf(team), true)
+            gamesViewModel.getUpcomingGames(listOf(team), true, true)
+            gamesViewModel.getTeamLogs(listOf(team), true, true)
             ToastMessageHandler(this).showToastMessage("Games refreshed")
             true
         }

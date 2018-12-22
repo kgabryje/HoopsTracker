@@ -29,9 +29,15 @@ class GamesViewModel : ViewModel() {
     fun upcomingGames(): LiveData<List<GameItem>> = upcomingGamesLiveData
     fun followedTeams(): LiveData<List<TeamItem>> = followedTeamsLiveData
 
-    fun getTeamLogs(teams: List<TeamItem>, reload: Boolean = false) {
+    fun getTeamLogs(teams: List<TeamItem>, reload: Boolean = false, isSingleTeamView: Boolean = false) {
         if (GamesService.finishedGames.isNotEmpty() && !reload) {
-            finishedGamesLiveData.value = GamesService.finishedGames
+            if (isSingleTeamView) {
+                finishedGamesLiveData.value = GamesService.finishedGames.filter {
+                    it.homeTeam == teams[0] || it.awayTeam == teams[0]
+                }
+            } else {
+                finishedGamesLiveData.value = GamesService.finishedGames
+            }
             return
         }
 
@@ -41,12 +47,14 @@ class GamesViewModel : ViewModel() {
         val call = apiConnector.getTeamGameLogs("latest", teamsString, "since-7-days-ago")
         call.enqueue(object : Callback<TeamGameLogsEndpoint> {
             override fun onResponse(call: Call<TeamGameLogsEndpoint>, response: Response<TeamGameLogsEndpoint>) {
-                val res = response.body()?.teamgamelogs?.gamelogs?.map {
-                    Converter().gameLogToGameItem(it)
-                }
-                if (res != null) {
-                    GamesService.finishedGames = res.distinct().sortedByDescending { it.date }
-                    finishedGamesLiveData.value = GamesService.finishedGames
+                if (response.isSuccessful) {
+                    val gameItems = response.body()?.teamgamelogs?.gamelogs?.map {
+                        Converter().gameLogToGameItem(it)
+                    }
+                    if (gameItems != null) {
+                        finishedGamesLiveData.value = gameItems.distinct().sortedByDescending { it.date }
+                        if (!isSingleTeamView) GamesService.finishedGames = finishedGamesLiveData.value!!
+                    }
                 }
             }
 
@@ -56,9 +64,15 @@ class GamesViewModel : ViewModel() {
         })
     }
 
-    fun getUpcomingGames(teams: List<TeamItem>, reload: Boolean = false) {
+    fun getUpcomingGames(teams: List<TeamItem>, reload: Boolean = false, isSingleTeamView: Boolean = false) {
         if (GamesService.upcomingGames.isNotEmpty() && !reload) {
-            upcomingGamesLiveData.value = GamesService.upcomingGames
+            if (isSingleTeamView) {
+                upcomingGamesLiveData.value = GamesService.upcomingGames.filter {
+                    it.awayTeam == teams[0] || it.homeTeam == teams[0]
+                }
+            } else {
+                upcomingGamesLiveData.value = GamesService.upcomingGames
+            }
             return
         }
 
@@ -68,12 +82,14 @@ class GamesViewModel : ViewModel() {
         val call = apiConnector.getSchedule("latest", teamsString, "from-today-to-7-days-from-now")
         call.enqueue(object : Callback<ScheduleEndpoint> {
             override fun onResponse(call: Call<ScheduleEndpoint>, response: Response<ScheduleEndpoint>) {
-                val res = response.body()?.fullgameschedule?.gameentry?.map {
-                    Converter().gameApiToGameItem(it)
-                }
-                if (res != null) {
-                    GamesService.upcomingGames = res.distinct()
-                    upcomingGamesLiveData.value = GamesService.upcomingGames
+                if (response.isSuccessful) {
+                    val gameItems = response.body()?.fullgameschedule?.gameentry?.map {
+                        Converter().gameApiToGameItem(it)
+                    }
+                    if (gameItems != null) {
+                        upcomingGamesLiveData.value = gameItems.distinct().sortedBy { it.date }
+                        if (!isSingleTeamView) GamesService.upcomingGames = upcomingGamesLiveData.value!!
+                    }
                 }
             }
 
@@ -90,21 +106,11 @@ class GamesViewModel : ViewModel() {
         }
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.value == null) {
-                    TeamsService.followedTeams = mutableListOf()
+                if (snapshot.value != null) {
+                    val teams = snapshot.children.mapNotNull { it.getValue(TeamItem::class.java) }.toMutableList()
+                    TeamsService.followedTeams = teams
                     followedTeamsLiveData.value = TeamsService.followedTeams
-                    return
                 }
-                val teams = mutableListOf<TeamItem>()
-                for (teamJson in snapshot.children) {
-                    val backgroundLogo = teamJson.child("backgroundLogo").value as String
-                    val logo = teamJson.child("logo").value as String
-                    val city = teamJson.child("city").value as String
-                    val name = teamJson.child("name").value as String
-                    teams.add(TeamItem(city, name, logo, backgroundLogo))
-                }
-                TeamsService.followedTeams = teams
-                followedTeamsLiveData.value = TeamsService.followedTeams
             }
 
             override fun onCancelled(p0: DatabaseError) {

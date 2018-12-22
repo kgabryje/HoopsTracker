@@ -56,6 +56,7 @@ class FollowTeamsViewModel : ViewModel() {
                 it.add(team)
                 toastMessagesLiveData.value = "${team.city} ${team.name} added to tracked teams"
             }
+            TeamsService.followedTeamsChanged = true
             TeamsService.followedTeams = it
             followedTeamsLiveData.value = it
             saveFollowedTeams()

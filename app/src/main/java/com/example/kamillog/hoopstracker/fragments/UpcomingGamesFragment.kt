@@ -51,7 +51,9 @@ class UpcomingGamesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
+        activity?.let { parent ->
+            viewModel = ViewModelProviders.of(parent).get(GamesViewModel::class.java)
+        }
         viewModel.upcomingGames().observe(this, Observer {
             if (it != null) {
                 gamesAdapter.gameList = it
@@ -74,12 +76,9 @@ class UpcomingGamesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (TeamsService.followedTeams.size == 0) {
-            viewModel.loadFollowedTeams()
-        } else {
+        if (TeamsService.followedTeams.size > 0) {
             noTeamsFollowedTextView.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
-            viewModel.getUpcomingGames(TeamsService.followedTeams, true)
         }
     }
 }

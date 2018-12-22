@@ -14,6 +14,7 @@ class TeamsService {
         ) { _, _, newValue ->
             newValue.sortBy { it.city }
         }
+        var followedTeamsChanged = false
 
 
         fun loadTeams() {

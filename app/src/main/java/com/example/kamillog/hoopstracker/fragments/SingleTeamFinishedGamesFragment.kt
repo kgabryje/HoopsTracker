@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import com.example.kamillog.hoopstracker.R
 import com.example.kamillog.hoopstracker.SingleTeamViewActivity
 import com.example.kamillog.hoopstracker.adapters.GamesAdapter
+import com.example.kamillog.hoopstracker.services.TeamsService
 import com.example.kamillog.hoopstracker.viewmodels.GamesViewModel
 
 class SingleTeamFinishedGamesFragment : Fragment() {
@@ -40,14 +41,15 @@ class SingleTeamFinishedGamesFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = gamesAdapter
             addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-
         }
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
+        activity?.let { parent ->
+            viewModel = ViewModelProviders.of(parent).get(GamesViewModel::class.java)
+        }
         viewModel.finishedGames().observe(this, Observer {
             if (it != null) {
                 gamesAdapter.gameList = it
@@ -55,6 +57,6 @@ class SingleTeamFinishedGamesFragment : Fragment() {
             }
         })
         val team = (activity as SingleTeamViewActivity).team
-        viewModel.getTeamLogs(listOf(team), true)
+        viewModel.getTeamLogs(listOf(team), TeamsService.followedTeamsChanged, true)
     }
 }

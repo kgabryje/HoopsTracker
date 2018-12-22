@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import com.example.kamillog.hoopstracker.R
 import com.example.kamillog.hoopstracker.SingleTeamViewActivity
 import com.example.kamillog.hoopstracker.adapters.GamesAdapter
+import com.example.kamillog.hoopstracker.services.TeamsService
 import com.example.kamillog.hoopstracker.viewmodels.GamesViewModel
 
 class SingleTeamUpcomingGamesFragment : Fragment() {
@@ -46,7 +47,9 @@ class SingleTeamUpcomingGamesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
+        activity?.let {
+            viewModel = ViewModelProviders.of(it).get(GamesViewModel::class.java)
+        }
         viewModel.upcomingGames().observe(this, Observer {
             if (it != null) {
                 gamesAdapter.gameList = it
@@ -54,7 +57,7 @@ class SingleTeamUpcomingGamesFragment : Fragment() {
             }
         })
         val team = (activity as SingleTeamViewActivity).team
-        viewModel.getUpcomingGames(listOf(team), true)
+        viewModel.getUpcomingGames(listOf(team), TeamsService.followedTeamsChanged, true)
     }
 
 }
