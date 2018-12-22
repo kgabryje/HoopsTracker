@@ -9,7 +9,7 @@ data class Stats(
     @SerializedName("FgAtt") val fieldGoalsAttempts: StatItem = StatItem(),
     @SerializedName("FgMade") val fieldGoalsMade: StatItem = StatItem(),
     @SerializedName("FgPct") val fieldGoalsPercent: StatItem = StatItem(),
-    @SerializedName("FtAtt") val freeThrowAttempt: StatItem = StatItem(),
+    @SerializedName("FtAtt") val freeThrowAttempts: StatItem = StatItem(),
     @SerializedName("FtMade") val freeThrowMade: StatItem = StatItem(),
     @SerializedName("FtPct") val freeThrowPercent: StatItem = StatItem(),
     @SerializedName("Reb") val rebounds: StatItem = StatItem(),

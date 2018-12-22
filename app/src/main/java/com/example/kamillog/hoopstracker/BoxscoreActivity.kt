@@ -3,16 +3,13 @@ package com.example.kamillog.hoopstracker
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.TabLayout
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import com.example.kamillog.hoopstracker.models.*
@@ -21,7 +18,6 @@ import com.example.kamillog.hoopstracker.viewmodels.BoxscoreViewModel
 import com.example.kamillog.hoopstracker.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.activity_boxscore.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
-import org.w3c.dom.Text
 
 class BoxscoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var viewModel: BoxscoreViewModel
@@ -99,329 +95,131 @@ class BoxscoreActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         }
     }
 
-    fun createTableForQuarters(quarterItems: List<QuarterItem>) {
-        val tableRowHome = TableRow(this)
-        val tableRowAway = TableRow(this)
-        val headerRow = TableRow(this)
-        tableRowHome.setPadding(30, 30, 30, 30)
-        tableRowHome.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
-
-        tableRowAway.setPadding(30, 30, 30, 30)
-        tableRowAway.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
-
-        headerRow.setPadding(30, 30, 30, 30)
-        headerRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
-
-        val homeTeamNameText = TextView(this)
-        val awayTeamNameText = TextView(this)
-        val headerTeamText = TextView(this)
-        homeTeamNameText.setPadding(30, 0, 30, 0)
-        homeTeamNameText.text = "${gameItem.homeTeam.city} ${gameItem.homeTeam.name}"
-        awayTeamNameText.setPadding(30, 0, 30, 0)
-        awayTeamNameText.text = "${gameItem.awayTeam.city} ${gameItem.awayTeam.name}"
-        headerTeamText.setPadding(30, 0, 30, 0)
-        headerTeamText.text = "Team"
-
-        tableRowHome.addView(homeTeamNameText)
-        tableRowAway.addView(awayTeamNameText)
-        headerRow.addView(headerTeamText)
+    private fun createTableForQuarters(quarterItems: List<QuarterItem>) {
+        val headerRow = createTableRowForSingleElement("Team", 30, 30, 30, 30)
+        val homeTeamRow = createTableRowForSingleElement(
+            "${gameItem.homeTeam.city} ${gameItem.homeTeam.name}",
+            30, 30, 30, 30
+        )
+        val awayTeamRow = createTableRowForSingleElement(
+            "${gameItem.awayTeam.city} ${gameItem.awayTeam.name}",
+            30, 30, 30, 30
+        )
 
         for (quarter in quarterItems) {
-            val quarterHomeScore = TextView(this)
-            quarterHomeScore.text = quarter.homeScore
-            quarterHomeScore.setPadding(30, 0, 30, 0)
-
-            val quarterAwayScore = TextView(this)
-            quarterAwayScore.text = quarter.awayScore
-            quarterAwayScore.setPadding(30, 0, 30, 0)
-
-            val quarterNumber = TextView(this)
-            if (quarter.number.toInt() < 5) {
-                quarterNumber.text = "Q${quarter.number}"
+            val quarterNumber = if (quarter.number.toInt() < 5) {
+                "Q${quarter.number}"
             } else {
-                quarterNumber.text = "OT${quarter.number.toInt() - 4}"
+                "OT${quarter.number.toInt() - 4}"
             }
-            quarterNumber.setPadding(30, 0, 30, 0)
 
-            tableRowHome.addView(quarterHomeScore)
-            tableRowAway.addView(quarterAwayScore)
-            headerRow.addView(quarterNumber)
+            addTextViewToRow(headerRow, quarterNumber)
+            addTextViewToRow(homeTeamRow, quarter.homeScore)
+            addTextViewToRow(awayTeamRow, quarter.awayScore)
         }
-
-        val homeTeamScore = TextView(this)
-        val awayTeamScore = TextView(this)
-        val headerScore = TextView(this)
-        homeTeamScore.setPadding(30, 0, 30, 0)
-        homeTeamScore.text = "${gameItem.homeTeamScore}"
-        awayTeamScore.setPadding(30, 0, 30, 0)
-        awayTeamScore.text = "${gameItem.awayTeamScore}"
-        headerScore.setPadding(30, 0, 30, 0)
-        headerScore.text = "TOT"
-
-        tableRowHome.addView(homeTeamScore)
-        tableRowAway.addView(awayTeamScore)
-        headerRow.addView(headerScore)
+        addTextViewToRow(headerRow, "Score")
+        addTextViewToRow(homeTeamRow, gameItem.homeTeamScore)
+        addTextViewToRow(awayTeamRow, gameItem.awayTeamScore)
 
         boxscore_table_layout.addView(headerRow)
-        boxscore_table_layout.addView(tableRowHome)
-        boxscore_table_layout.addView(tableRowAway)
+        boxscore_table_layout.addView(homeTeamRow)
+        boxscore_table_layout.addView(awayTeamRow)
     }
 
-    fun createBoxscore(homePlayerEntry: List<PlayerEntry>, awayPlayerEntry: List<PlayerEntry>) {
-        val homeTeamNameRow = TableRow(this)
-        homeTeamNameRow.setPadding(30, 30, 30, 15)
-        homeTeamNameRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
+    private fun createBoxscore(homePlayerEntry: List<PlayerEntry>, awayPlayerEntry: List<PlayerEntry>) {
+        addTableRowsForTeam(stats_table_layout, gameItem.homeTeam, homePlayerEntry)
+        addTableRowsForTeam(stats_table_layout, gameItem.awayTeam, awayPlayerEntry, true)
+    }
 
-        val homeTeamNameText = TextView(this)
-        homeTeamNameText.setPadding(30, 0, 30, 0)
-        homeTeamNameText.text = gameItem.homeTeam.city + " " + gameItem.homeTeam.name
-        homeTeamNameRow.addView(homeTeamNameText)
-
-        stats_table_layout.addView(homeTeamNameRow)
-
+    private fun addTableRowsForTeam(table: TableLayout,
+                                    team: TeamItem,
+                                    playerEntries: List<PlayerEntry>,
+                                    bigTopRowPadding: Boolean = false) {
         val headerTexts = listOf("Player", "Min", "Pts", "Ast", "Reb", "Stl", "Blk", "FGM", "FGA", "FG%", "3PM", "3PA", "3P%", "FTM", "FTA", "FT%", "+/-")
 
-        val headerRow = TableRow(this)
-        headerRow.setPadding(30, 15, 30, 30)
-        headerRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
+        var topPadding = 30
+        if (bigTopRowPadding) topPadding = 120
+        val teamNameRow = createTableRowForSingleElement(
+            team.city + " " + team.name,
+            30, topPadding, 30, 15
+        )
+        table.addView(teamNameRow)
 
-        for (columnName in headerTexts) {
-            val headerText = TextView(this)
-            headerText.setPadding(30, 0, 30, 0)
-            headerText.text = columnName
+        val headerRow = createTableRowWithContent(headerTexts, 30, 15, 30, 30)
+        table.addView(headerRow)
 
-            headerRow.addView(headerText)
+        for (entry in playerEntries) {
+            val row = createStatsRowFromEntry(entry)
+            table.addView(row)
+        }
+    }
+
+    private fun createTableRowForSingleElement(element: String,
+                                               leftPadding: Int = 30,
+                                               topPadding: Int = 0,
+                                               rightPadding: Int = 30,
+                                               bottomPadding: Int = 0): TableRow {
+        return createTableRowWithContent(listOf(element), leftPadding, topPadding, rightPadding, bottomPadding)
+    }
+
+    private fun createTableRowWithContent(content: List<String>,
+                                          leftPadding: Int = 30,
+                                          topPadding: Int = 0,
+                                          rightPadding: Int = 30,
+                                          bottomPadding: Int = 0): TableRow {
+        val row = TableRow(this)
+        row.setPadding(leftPadding, topPadding, rightPadding, bottomPadding)
+        row.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
+
+        for (element in content) {
+            addTextViewToRow(row, element)
         }
 
-        stats_table_layout.addView(headerRow)
+        return row
+    }
 
+    private fun createStatsRowFromEntry(entry: PlayerEntry): TableRow {
+        val row = TableRow(this)
+        row.setPadding(30, 15, 30, 15)
+        row.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
 
-        for (entry in homePlayerEntry) {
-            val row = TableRow(this)
-            row.setPadding(30, 15, 30, 15)
-            row.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
-
-            val playerNameTextView = TextView(this)
-            playerNameTextView.setPadding(30, 0, 30, 0)
-            playerNameTextView.text = entry.player.firstName + " " + entry.player.lastName
-            row.addView(playerNameTextView)
-
-            val minutesTextView = TextView(this)
-            minutesTextView.setPadding(30, 0, 30, 0)
-            val seconds: Int = entry.stats.seconds.value.toInt()
-
-            var minutesString = (seconds/60).toString()
-            var secondsToString = (seconds%60).toString()
-            if (minutesString.length == 1) {
-                minutesString = "0" + minutesString
-            }
-            if (secondsToString.length == 1) {
-                secondsToString = "0" + secondsToString
-            }
-            minutesTextView.text = "$minutesString:$secondsToString"
-            row.addView(minutesTextView)
-
-            val pointsTextView = TextView(this)
-            pointsTextView.setPadding(30, 0, 30, 0)
-            pointsTextView.text = entry.stats.points.value
-            row.addView(pointsTextView)
-
-            val assistsTextView = TextView(this)
-            assistsTextView.setPadding(30, 0, 30, 0)
-            assistsTextView.text = entry.stats.assists.value
-            row.addView(assistsTextView)
-
-            val reboundsTextView = TextView(this)
-            reboundsTextView.setPadding(30, 0, 30, 0)
-            reboundsTextView.text = entry.stats.rebounds.value
-            row.addView(reboundsTextView)
-
-            val stealsTextView = TextView(this)
-            stealsTextView.setPadding(30, 0, 30, 0)
-            stealsTextView.text = entry.stats.steals.value
-            row.addView(stealsTextView)
-
-            val blocksTextView = TextView(this)
-            blocksTextView.setPadding(30, 0, 30, 0)
-            blocksTextView.text = entry.stats.blocks.value
-            row.addView(blocksTextView)
-
-            val fgmTextView = TextView(this)
-            fgmTextView.setPadding(30, 0, 30, 0)
-            fgmTextView.text = entry.stats.fieldGoalsMade.value
-            row.addView(fgmTextView)
-
-            val fgaTextView = TextView(this)
-            fgaTextView.setPadding(30, 0, 30, 0)
-            fgaTextView.text = entry.stats.fieldGoalsAttempts.value
-            row.addView(fgaTextView)
-
-            val fgpTextView = TextView(this)
-            fgpTextView.setPadding(30, 0, 30, 0)
-            fgpTextView.text = entry.stats.fieldGoalsPercent.value
-            row.addView(fgpTextView)
-
-            val tpmTextView = TextView(this)
-            tpmTextView.setPadding(30, 0, 30, 0)
-            tpmTextView.text = entry.stats.threePointMade.value
-            row.addView(tpmTextView)
-
-            val tpaTextView = TextView(this)
-            tpaTextView.setPadding(30, 0, 30, 0)
-            tpaTextView.text = entry.stats.threePointAttempts.value
-            row.addView(tpaTextView)
-
-            val tppTextView = TextView(this)
-            tppTextView.setPadding(30, 0, 30, 0)
-            tppTextView.text = entry.stats.threePointPercent.value
-            row.addView(tppTextView)
-
-            val ftmTextView = TextView(this)
-            ftmTextView.setPadding(30, 0, 30, 0)
-            ftmTextView.text = entry.stats.freeThrowMade.value
-            row.addView(ftmTextView)
-
-            val ftaTextView = TextView(this)
-            ftaTextView.setPadding(30, 0, 30, 0)
-            ftaTextView.text = entry.stats.freeThrowAttempt.value
-            row.addView(ftaTextView)
-
-            val ftpTextView = TextView(this)
-            ftpTextView.setPadding(30, 0, 30, 0)
-            ftpTextView.text = entry.stats.freeThrowPercent.value
-            row.addView(ftpTextView)
-
-            val plusMinusTextView = TextView(this)
-            plusMinusTextView.setPadding(30, 0, 30, 0)
-            plusMinusTextView.text = entry.stats.plusMinus.value
-            row.addView(plusMinusTextView)
-
-            stats_table_layout.addView(row)
+        val seconds: Int = entry.stats.seconds.value.toInt()
+        val minutesString = (seconds/60).toString()
+        var secondsToString = (seconds%60).toString()
+        if (secondsToString.length == 1) {
+            secondsToString = "0$secondsToString"
         }
 
+        addTextViewToRow(row, entry.player.firstName + " " + entry.player.lastName)
+        addTextViewToRow(row, "$minutesString:$secondsToString")
+        addTextViewToRow(row, entry.stats.points.value)
+        addTextViewToRow(row, entry.stats.assists.value)
+        addTextViewToRow(row, entry.stats.rebounds.value)
+        addTextViewToRow(row, entry.stats.steals.value)
+        addTextViewToRow(row, entry.stats.blocks.value)
+        addTextViewToRow(row, entry.stats.fieldGoalsMade.value)
+        addTextViewToRow(row, entry.stats.fieldGoalsAttempts.value)
+        addTextViewToRow(row, entry.stats.fieldGoalsPercent.value)
+        addTextViewToRow(row, entry.stats.threePointMade.value)
+        addTextViewToRow(row, entry.stats.threePointAttempts.value)
+        addTextViewToRow(row, entry.stats.threePointPercent.value)
+        addTextViewToRow(row, entry.stats.freeThrowMade.value)
+        addTextViewToRow(row, entry.stats.freeThrowAttempts.value)
+        addTextViewToRow(row, entry.stats.freeThrowPercent.value)
+        addTextViewToRow(row, entry.stats.plusMinus.value)
 
-        val awayTeamNameRow = TableRow(this)
-        awayTeamNameRow.setPadding(30, 120, 30, 15)
-        awayTeamNameRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
+        return row
+    }
 
-        val awayTeamNameText = TextView(this)
-        awayTeamNameText.setPadding(30, 0, 30, 0)
-        awayTeamNameText.text = gameItem.awayTeam.city + " " + gameItem.awayTeam.name
-        awayTeamNameRow.addView(awayTeamNameText)
-
-        stats_table_layout.addView(awayTeamNameRow)
-
-        val headerRow2 = TableRow(this)
-        headerRow2.setPadding(30, 15, 30, 30)
-        headerRow2.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
-
-        for (columnName in headerTexts) {
-            val headerText = TextView(this)
-            headerText.setPadding(30, 0, 30, 0)
-            headerText.text = columnName
-
-            headerRow2.addView(headerText)
-        }
-
-        stats_table_layout.addView(headerRow2)
-
-        for (entry in awayPlayerEntry) {
-            val row = TableRow(this)
-            row.setPadding(30, 15, 30, 15)
-            row.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
-
-            val playerNameTextView = TextView(this)
-            playerNameTextView.setPadding(30, 0, 30, 0)
-            playerNameTextView.text = entry.player.firstName + " " + entry.player.lastName
-            row.addView(playerNameTextView)
-
-            val minutesTextView = TextView(this)
-            minutesTextView.setPadding(30, 0, 30, 0)
-            val seconds: Int = entry.stats.seconds.value.toInt()
-            val minutesString = (seconds/60).toString()
-            var secondsToString = (seconds%60).toString()
-            if (secondsToString.length == 1) {
-                secondsToString = "0" + secondsToString
-            }
-            minutesTextView.text = "$minutesString:$secondsToString"
-            row.addView(minutesTextView)
-
-            val pointsTextView = TextView(this)
-            pointsTextView.setPadding(30, 0, 30, 0)
-            pointsTextView.text = entry.stats.points.value
-            row.addView(pointsTextView)
-
-            val assistsTextView = TextView(this)
-            assistsTextView.setPadding(30, 0, 30, 0)
-            assistsTextView.text = entry.stats.assists.value
-            row.addView(assistsTextView)
-
-            val reboundsTextView = TextView(this)
-            reboundsTextView.setPadding(30, 0, 30, 0)
-            reboundsTextView.text = entry.stats.rebounds.value
-            row.addView(reboundsTextView)
-
-            val stealsTextView = TextView(this)
-            stealsTextView.setPadding(30, 0, 30, 0)
-            stealsTextView.text = entry.stats.steals.value
-            row.addView(stealsTextView)
-
-            val blocksTextView = TextView(this)
-            blocksTextView.setPadding(30, 0, 30, 0)
-            blocksTextView.text = entry.stats.blocks.value
-            row.addView(blocksTextView)
-
-            val fgmTextView = TextView(this)
-            fgmTextView.setPadding(30, 0, 30, 0)
-            fgmTextView.text = entry.stats.fieldGoalsMade.value
-            row.addView(fgmTextView)
-
-            val fgaTextView = TextView(this)
-            fgaTextView.setPadding(30, 0, 30, 0)
-            fgaTextView.text = entry.stats.fieldGoalsAttempts.value
-            row.addView(fgaTextView)
-
-            val fgpTextView = TextView(this)
-            fgpTextView.setPadding(30, 0, 30, 0)
-            fgpTextView.text = entry.stats.fieldGoalsPercent.value
-            row.addView(fgpTextView)
-
-            val tpmTextView = TextView(this)
-            tpmTextView.setPadding(30, 0, 30, 0)
-            tpmTextView.text = entry.stats.threePointMade.value
-            row.addView(tpmTextView)
-
-            val tpaTextView = TextView(this)
-            tpaTextView.setPadding(30, 0, 30, 0)
-            tpaTextView.text = entry.stats.threePointAttempts.value
-            row.addView(tpaTextView)
-
-            val tppTextView = TextView(this)
-            tppTextView.setPadding(30, 0, 30, 0)
-            tppTextView.text = entry.stats.threePointPercent.value
-            row.addView(tppTextView)
-
-            val ftmTextView = TextView(this)
-            ftmTextView.setPadding(30, 0, 30, 0)
-            ftmTextView.text = entry.stats.freeThrowMade.value
-            row.addView(ftmTextView)
-
-            val ftaTextView = TextView(this)
-            ftaTextView.setPadding(30, 0, 30, 0)
-            ftaTextView.text = entry.stats.freeThrowAttempt.value
-            row.addView(ftaTextView)
-
-            val ftpTextView = TextView(this)
-            ftpTextView.setPadding(30, 0, 30, 0)
-            ftpTextView.text = entry.stats.freeThrowPercent.value
-            row.addView(ftpTextView)
-
-            val plusMinusTextView = TextView(this)
-            plusMinusTextView.setPadding(30, 0, 30, 0)
-            plusMinusTextView.text = entry.stats.plusMinus.value
-            row.addView(plusMinusTextView)
-
-            stats_table_layout.addView(row)
-        }
+    private fun addTextViewToRow(row: TableRow,
+                                 text: String,
+                                 leftPadding: Int = 30,
+                                 topPadding: Int = 0,
+                                 rightPadding: Int = 30,
+                                 bottomPadding: Int = 0) {
+        val textView = TextView(this)
+        textView.setPadding(leftPadding, topPadding, rightPadding, bottomPadding)
+        textView.text = text
+        row.addView(textView)
     }
 }
