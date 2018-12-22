@@ -51,29 +51,6 @@ class RegisterViewModel(private val context: Context) : ViewModel() {
                     activityResultLiveData.value = Activity.RESULT_OK
                 })
             spotsLiveData.value = true
-
-            mAuth.createUserWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(context as Activity) { task ->
-                    if (task.isSuccessful) {
-                        val usersReference: DatabaseReference = dbRef.child("users")
-                        val userId: String = mAuth.currentUser?.uid ?: ""
-                        val userIdRef: DatabaseReference = usersReference.child(userId)
-                        userIdRef.run{
-                            child("email").setValue(email)
-                            push()
-                        }
-
-                        mAuth.currentUser?.sendEmailVerification()
-                        messageLiveData.value = context.getString(R.string.verification_email)
-                        spotsLiveData.value = false
-
-                        context.setResult(Activity.RESULT_OK, Intent())
-                        context.finish()
-                    } else {
-                        spotsLiveData.value = false
-                        messageLiveData.value = context.getString(R.string.acc_creation_failed)
-                    }
-                }
         }
     }
 }
