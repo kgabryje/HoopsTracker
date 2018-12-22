@@ -16,9 +16,9 @@ import com.example.kamillog.hoopstracker.models.TeamItem
 import com.example.kamillog.hoopstracker.models.UserModel
 import com.example.kamillog.hoopstracker.services.LoginService
 import com.example.kamillog.hoopstracker.services.TeamsService
+import com.example.kamillog.hoopstracker.utils.ToastMessageHandler
 import com.example.kamillog.hoopstracker.viewmodels.FollowTeamsViewModel
 import com.example.kamillog.hoopstracker.viewmodels.UserViewModel
-import com.example.kamillog.hoopstracker.viewmodels.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_follow_teams.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
 
@@ -40,12 +40,14 @@ class FollowTeamsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             addItemDecoration(DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL))
         }
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(this, "FollowTeams"))
-            .get(FollowTeamsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(FollowTeamsViewModel::class.java)
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
 
         viewModel.followedTeams().observe(this, Observer {
             teamsAdapter.notifyDataSetChanged()
+        })
+        viewModel.messages().observe(this, Observer {
+            ToastMessageHandler(this).showToastMessage(it)
         })
 
         viewModel.loadFollowedTeams()
@@ -65,7 +67,7 @@ class FollowTeamsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         toggle.syncState()
     }
 
-    fun toggleTeam(teamItem: TeamItem) {
+    private fun toggleTeam(teamItem: TeamItem) {
         viewModel.toggleTeam(teamItem)
     }
 

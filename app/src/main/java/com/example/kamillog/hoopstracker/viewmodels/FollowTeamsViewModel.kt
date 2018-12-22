@@ -3,18 +3,17 @@ package com.example.kamillog.hoopstracker.viewmodels
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.content.Context
 import com.example.kamillog.hoopstracker.models.TeamItem
-import com.example.kamillog.hoopstracker.services.TeamsService
 import com.example.kamillog.hoopstracker.services.LoginService
-import com.example.kamillog.hoopstracker.utils.ToastMessageHandler
+import com.example.kamillog.hoopstracker.services.TeamsService
 import com.google.firebase.database.*
 
-class FollowTeamsViewModel(context: Context) : ViewModel() {
-    private val toastMessageHandler = ToastMessageHandler(context)
-
+class FollowTeamsViewModel : ViewModel() {
     private val followedTeamsLiveData = MutableLiveData<MutableList<TeamItem>>()
+    private val toastMessagesLiveData = MutableLiveData<String>()
+
     fun followedTeams(): LiveData<MutableList<TeamItem>> = followedTeamsLiveData
+    fun messages(): LiveData<String> = toastMessagesLiveData
 
     private val dbRef: DatabaseReference = FirebaseDatabase.getInstance().reference
         .child("followedTeams")
@@ -36,20 +35,14 @@ class FollowTeamsViewModel(context: Context) : ViewModel() {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.value == null) {
-                    return
-                }
-                val teamList = (snapshot.value as ArrayList<*>).map {
-                    val team = it as Map<String, String>
-                    TeamItem(team["city"]!!, team["name"]!!, team["logo"]!!, team["backgroundLogo"]!!)
-                }.toMutableList()
+                val teamList = snapshot.children.mapNotNull { it.getValue(TeamItem::class.java) }.toMutableList()
                 followedTeamsLiveData.value = teamList
                 TeamsService.followedTeams = teamList
             }
         })
     }
 
-    fun saveFollowedTeams() {
+    private fun saveFollowedTeams() {
         dbRef.setValue(followedTeamsLiveData.value)
         dbRef.push()
     }
@@ -58,10 +51,10 @@ class FollowTeamsViewModel(context: Context) : ViewModel() {
         followedTeamsLiveData.value?.let {
             if (it.contains(team)) {
                 it.remove(team)
-                toastMessageHandler.showToastMessage("${team.city} ${team.name} removed from tracked teams")
+                toastMessagesLiveData.value = "${team.city} ${team.name} removed from tracked teams"
             } else {
                 it.add(team)
-                toastMessageHandler.showToastMessage("${team.city} ${team.name} added to tracked teams")
+                toastMessagesLiveData.value = "${team.city} ${team.name} added to tracked teams"
             }
             TeamsService.followedTeams = it
             followedTeamsLiveData.value = it
