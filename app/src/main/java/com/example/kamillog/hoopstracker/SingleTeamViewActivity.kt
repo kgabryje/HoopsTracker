@@ -4,12 +4,12 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -25,9 +25,6 @@ import kotlinx.android.synthetic.main.activity_single_team_view.*
 import kotlinx.android.synthetic.main.app_bar_single_team.*
 import kotlinx.android.synthetic.main.content_single_team.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
-import android.support.v4.content.IntentCompat
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
-
 
 
 class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +40,7 @@ class SingleTeamViewActivity : AppCompatActivity(), NavigationView.OnNavigationI
         team = intent.getParcelableExtra("team") as TeamItem
         supportActionBar?.title = "${team.city} ${team.name}"
         viewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+
         viewModel.userModel().value = UserModel()
         viewModel.userModel().observe(this, Observer {
             navViewSingleTeam.setNavigationItemSelectedListener(this)

@@ -12,14 +12,12 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import com.example.kamillog.hoopstracker.adapters.TeamsAdapter
 import com.example.kamillog.hoopstracker.models.TeamItem
 import com.example.kamillog.hoopstracker.models.UserModel
 import com.example.kamillog.hoopstracker.services.LoginService
 import com.example.kamillog.hoopstracker.services.TeamsService
 import com.example.kamillog.hoopstracker.viewmodels.UserViewModel
-import kotlinx.android.synthetic.main.activity_follow_teams.*
 import kotlinx.android.synthetic.main.activity_my_teams.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
 

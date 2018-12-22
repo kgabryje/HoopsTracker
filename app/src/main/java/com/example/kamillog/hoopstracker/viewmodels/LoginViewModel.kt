@@ -8,14 +8,13 @@ import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
-import com.example.kamillog.hoopstracker.services.LoginService
 import com.example.kamillog.hoopstracker.R
+import com.example.kamillog.hoopstracker.services.LoginService
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.*
 

@@ -31,7 +31,4 @@ class UserViewModel : ViewModel() {
         })
     }
 
-    fun signOut() {
-        mAuth.signOut()
-    }
 }
