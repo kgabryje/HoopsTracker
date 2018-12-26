@@ -18,7 +18,6 @@ class TeamsViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
             }
 
             override fun onError(e: Exception?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
     }

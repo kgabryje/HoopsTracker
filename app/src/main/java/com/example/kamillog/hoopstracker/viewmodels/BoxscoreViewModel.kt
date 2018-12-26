@@ -41,7 +41,6 @@ class BoxscoreViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<GameBoxScoreEndpoint>, t: Throwable) {
-                TODO("not implemented")
             }
         })
     }

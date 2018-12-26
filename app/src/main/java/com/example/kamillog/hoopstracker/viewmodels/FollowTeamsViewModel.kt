@@ -31,7 +31,6 @@ class FollowTeamsViewModel : ViewModel() {
 
         dbRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented")
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {

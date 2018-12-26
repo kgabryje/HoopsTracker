@@ -41,9 +41,14 @@ class GamesViewModel : ViewModel() {
             return
         }
 
+        if (teams.isEmpty()) {
+            finishedGamesLiveData.value = listOf()
+            return
+        }
         val teamsString = teams.joinToString(",", transform = { teamItem ->
             "${teamItem.city.replace(" ", "")}-${teamItem.name.replace(" ", "")}"
         })
+
         val call = apiConnector.getTeamGameLogs("latest", teamsString, "since-7-days-ago")
         call.enqueue(object : Callback<TeamGameLogsEndpoint> {
             override fun onResponse(call: Call<TeamGameLogsEndpoint>, response: Response<TeamGameLogsEndpoint>) {
@@ -55,6 +60,8 @@ class GamesViewModel : ViewModel() {
                         finishedGamesLiveData.value = gameItems.distinct().sortedByDescending { it.date }
                         if (!isSingleTeamView) GamesService.finishedGames = finishedGamesLiveData.value!!
                     }
+                } else {
+                    finishedGamesLiveData.value = listOf()
                 }
             }
 
@@ -76,6 +83,11 @@ class GamesViewModel : ViewModel() {
             return
         }
 
+        if (teams.isEmpty()) {
+            finishedGamesLiveData.value = listOf()
+            return
+        }
+
         val teamsString = teams.joinToString(",", transform = { teamItem ->
             "${teamItem.city.replace(" ", "")}-${teamItem.name.replace(" ", "")}"
         })
@@ -90,11 +102,12 @@ class GamesViewModel : ViewModel() {
                         upcomingGamesLiveData.value = gameItems.distinct().sortedBy { it.date }
                         if (!isSingleTeamView) GamesService.upcomingGames = upcomingGamesLiveData.value!!
                     }
+                } else {
+                    upcomingGamesLiveData.value = listOf()
                 }
             }
 
             override fun onFailure(call: Call<ScheduleEndpoint>, t: Throwable) {
-                TODO("not implemented")
             }
         })
     }
@@ -110,11 +123,12 @@ class GamesViewModel : ViewModel() {
                     val teams = snapshot.children.mapNotNull { it.getValue(TeamItem::class.java) }.toMutableList()
                     TeamsService.followedTeams = teams
                     followedTeamsLiveData.value = TeamsService.followedTeams
+                } else {
+                    followedTeamsLiveData.value = listOf()
                 }
             }
 
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented")
             }
         })
     }
